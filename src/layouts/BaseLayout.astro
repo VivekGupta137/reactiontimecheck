@@ -1,0 +1,30 @@
+---
+import Footer from "@/components/Footer";
+import "@/styles/global.css";
+import BaseNav from "./BaseNav.astro";
+
+// https://docs.astro.build/en/basics/astro-components/#named-slots
+---
+
+<html
+    lang="en"
+    class="dark"
+>
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1"
+        />
+        <slot name="head" />
+    </head>
+    <body>
+        <BaseNav />
+
+        <main>
+            <slot />
+            <!-- your content is injected here -->
+        </main>
+        <Footer />
+    </body>
+</html>

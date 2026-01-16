@@ -1,0 +1,23 @@
+---
+import { getCollection } from "astro:content";
+import { collections } from "../content.config";
+import { getEntry } from "astro:content";
+import { render } from "astro:content";
+
+const matches = import.meta.glob("../content/*.{md,mdx}", {
+  eager: true,
+});
+
+// const reactionTest = await getCollection("content");
+const reactionTest = await getEntry("content", "reaction-test");
+
+if (!reactionTest) {
+  // Handle Error, for example:
+  throw new Error("Could not find reactionTest content");
+}
+
+const { Content, headings } = await render(reactionTest);
+console.log({ reactionTest });
+---
+
+<Content />
