@@ -4,7 +4,6 @@ import {
     recordReactionTime,
     incrementAttempt,
     $currentRound,
-    MAX_ROUNDS,
 } from "@/stores/reaction-state";
 import { useStore } from "@nanostores/react";
 import React, { useEffect, useRef, useCallback } from "react";
@@ -12,6 +11,7 @@ import RWaiting from "./RWaiting";
 import RTooSoon from "./RTooSoon";
 import RGreen from "./RGreen";
 import RComplete from "./RComplete";
+import { $rtConfig } from "@/stores/reaction-settings";
 
 const RStarted = () => {
     const reactionState = useStore($reactionState);
@@ -19,15 +19,17 @@ const RStarted = () => {
     const startTimeRef = useRef<number | null>(null);
     const timeoutRef = useRef<number | null>(null);
     const [reactionTime, setReactionTime] = React.useState<number | null>(null);
+    const rtConfig = useStore($rtConfig);
+    const MAX_ROUNDS = parseInt(rtConfig.maxRounds);
 
     const startNewRound = useCallback(() => {
         transitionStateTo("waiting");
 
         // Random delay between 1-4 seconds for better unpredictability
-        const delay = 0 + Math.random() * 1000;
-        console.log({
-            delay,
-        });
+        const minDelay = parseInt(rtConfig.minDelayMS);
+        const maxDelay = parseInt(rtConfig.maxDelayMS);
+
+        const delay = minDelay + Math.random() * maxDelay;
 
         timeoutRef.current = window.setTimeout(() => {
             console.log("Screen is green now!");
@@ -35,8 +37,6 @@ const RStarted = () => {
             transitionStateTo("green");
         }, delay);
     }, []);
-
-    const waitRandomly = () => {};
 
     useEffect(() => {
         if (reactionState === "started") {
@@ -52,19 +52,19 @@ const RStarted = () => {
     }, []);
 
     const handleClick = useCallback(() => {
-        console.log({ tout: timeoutRef.current });
+        const endTime = performance.now();
+        const rt = Math.round(endTime - (startTimeRef.current ?? 0));
+
         if (reactionState === "waiting") {
             if (timeoutRef.current) {
                 clearTimeout(timeoutRef.current);
             }
-            incrementAttempt();
+            incrementAttempt({ rt, type: "tooSoon" });
             transitionStateTo("tooSoon");
         } else if (reactionState === "green" && startTimeRef.current) {
-            const endTime = performance.now();
-            const rt = Math.round(endTime - startTimeRef.current);
             setReactionTime(rt);
             recordReactionTime(rt);
-            incrementAttempt();
+            incrementAttempt({ rt, type: "valid" });
             transitionStateTo("complete");
         } else if (reactionState === "tooSoon") {
             startNewRound();

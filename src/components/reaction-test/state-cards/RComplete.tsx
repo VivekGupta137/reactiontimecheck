@@ -1,8 +1,9 @@
 import React from "react";
 import { useStore } from "@nanostores/react";
-import { $statistics, MAX_ROUNDS, resetGame } from "@/stores/reaction-state";
+import { $statistics, resetGame } from "@/stores/reaction-state";
 import { CheckCircle } from "lucide-react";
 import RContent from "../RContent";
+import { $rtConfig } from "@/stores/reaction-settings";
 
 interface RCompleteProps {
     reactionTime: number | null;
@@ -12,6 +13,8 @@ interface RCompleteProps {
 
 const RComplete = ({ reactionTime, currentRound, onNext }: RCompleteProps) => {
     const statistics = useStore($statistics);
+    const rtConfig = useStore($rtConfig);
+    const MAX_ROUNDS = parseInt(rtConfig.maxRounds);
     const isGameComplete = currentRound >= MAX_ROUNDS;
 
     const handleClick = () => {

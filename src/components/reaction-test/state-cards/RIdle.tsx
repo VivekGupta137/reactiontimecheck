@@ -1,5 +1,6 @@
 import { transitionStateTo } from "@/stores/reaction-state";
 import { Button } from "@heroui/react";
+import { Mouse, MousePointer2, MousePointerClick } from "lucide-react";
 import React from "react";
 
 const RIdle = () => {
@@ -13,8 +14,10 @@ const RIdle = () => {
                 <Button
                     disableRipple
                     color="primary"
+                    variant="shadow"
                     className="mt-8 mb-0"
                     onPress={() => transitionStateTo("started")}
+                    endContent={<Mouse size={16} />}
                 >
                     Start Test
                 </Button>
