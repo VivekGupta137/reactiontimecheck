@@ -1,12 +1,36 @@
-@import "tailwindcss";
+@layer base, components, utilities, overrides;
+
+@import "tailwindcss" layer(utilities);
 @plugin './hero.ts';
 /* Note: You may need to change the path to fit your project structure */
 @source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
 @custom-variant dark (&:is(.dark *));
 
-:root {
-    --bg-color: #0d1b2a;
-    --bg-surface-color: #1b263b;
-    --red-soft: #e76f51;
-    --green-soft: #2a9d8f;
+@layer overrides {
+    :root {
+        --bg-color: #0d1b2a;
+        --bg-surface-color: #1b263b;
+        --red-soft: #e76f51;
+        --green-soft: #2a9d8f;
+    }
+
+    #rstarted-data::before {
+        content: attr(data-elapsed);
+    }
+
+    #rstarted-wrapper {
+        background-color: var(--bg-surface-color);
+    }
+
+    #rstarted-wrapper[data-state="waiting"] {
+        background-color: var(--red-soft);
+    }
+
+    #rstarted-wrapper[data-state="green"] {
+        background-color: var(--green-soft);
+    }
+
+    #rstarted-wrapper[data-state="complete"] {
+        background-color: var(--green-soft);
+    }
 }

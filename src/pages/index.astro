@@ -3,9 +3,9 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { Button } from "@heroui/react";
 
 import "../styles/global.css";
+import ReactionTest from "@/components/reaction-test/ReactionTest";
 ---
 
 <BaseLayout>
-  <h1>Test your reaction time</h1>
-  <Button color="primary" client:visible>My button</Button>
+    <ReactionTest client:load />
 </BaseLayout>

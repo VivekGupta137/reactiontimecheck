@@ -11,5 +11,14 @@ module.exports = {
         extend: {},
     },
     darkMode: "class",
-    plugins: [heroui()],
+
+    plugins: [
+        heroui({
+            defaultTheme: "dark",
+            addCommonColors: true,
+
+            prefix: "vg-",
+            layout: {},
+        }),
+    ],
 };
