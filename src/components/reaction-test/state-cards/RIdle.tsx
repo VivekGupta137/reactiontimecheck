@@ -7,15 +7,19 @@ const RIdle = () => {
     return (
         <div className="flex flex-col my-20">
             <h1 className="text-3xl font-bold text-center">
-                Test your reaction time
+                Test Your Reaction Speed
             </h1>
+            <p className="text-center">
+                Click when the screen turns green. Results in milliseconds.
+            </p>
             <p className="text-center">Click "Start Test" to begin.</p>
-            <div className="self-center">
+
+            <div className="self-center mt-8 mb-0">
+                <p className="text-center mb-2">👇</p>
                 <Button
                     disableRipple
                     color="primary"
                     variant="shadow"
-                    className="mt-8 mb-0"
                     onPress={() => transitionStateTo("started")}
                     endContent={<Mouse size={16} />}
                 >

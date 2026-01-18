@@ -15,7 +15,7 @@ export const defaultRTConfig: RTConfig = {
     maxRounds: "5",
     mouseClick: "onpress",
     minDelayMS: "2000",
-    maxDelayMS: "5000",
+    maxDelayMS: "6000",
 };
 
 export const $rtConfig = persistentMap<RTConfig>("config:", defaultRTConfig);

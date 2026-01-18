@@ -5,15 +5,15 @@ import { getEntry } from "astro:content";
 import { render } from "astro:content";
 
 const matches = import.meta.glob("../content/*.{md,mdx}", {
-  eager: true,
+    eager: true,
 });
 
 // const reactionTest = await getCollection("content");
-const reactionTest = await getEntry("content", "reaction-test");
+const reactionTest = await getEntry("content", "reaction-time-test");
 
 if (!reactionTest) {
-  // Handle Error, for example:
-  throw new Error("Could not find reactionTest content");
+    // Handle Error, for example:
+    throw new Error("Could not find reactionTest content");
 }
 
 const { Content, headings } = await render(reactionTest);

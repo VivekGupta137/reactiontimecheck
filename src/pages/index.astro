@@ -4,8 +4,26 @@ import { Button } from "@heroui/react";
 
 import "../styles/global.css";
 import ReactionTest from "@/components/reaction-test/ReactionTest";
+import { getEntry } from "astro:content";
+import { render } from "astro:content";
+
+const matches = import.meta.glob("../content/*.{md,mdx}", {
+    eager: true,
+});
+const homepage = await getEntry("content", "home-page");
+if (!homepage) {
+    // Handle Error, for example:
+    throw new Error("Could not find reactionTest content");
+}
+
+const { Content, headings } = await render(homepage);
 ---
 
 <BaseLayout>
     <ReactionTest client:load />
+    <div
+        class="prose dark:prose-invert prose-zinc w-full max-w-full px-2 md:px-6 lg:px-8"
+    >
+        <Content />
+    </div>
 </BaseLayout>

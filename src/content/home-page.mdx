@@ -1,0 +1,38 @@
+---
+title: "Home Page"
+description: "Test your reaction speed instantly. Click when the screen turns green and measure your reflexes in milliseconds. Free reaction time test with global rankings."
+---
+
+import FAQ from "@/components/faq/FAQ";
+import FAQItem from "@/components/faq/FAQItem";
+import FloatingFAQ from "@/components/faq/FloatingFAQ";
+import Reviews from "@/components/Reviews";
+import ReviewCard from "@/components/reviews/ReviewCard";
+import RLineChart from "@/components/reaction-test/RLineChart";
+
+
+
+
+
+<FloatingFAQ client:load>
+    <FAQ >
+    <FAQItem question="What is a good reaction time?" client:load>
+        A good reaction time is typically around 200 milliseconds (ms) or faster. The average human reaction time is about 250ms. Professional gamers and athletes often achieve times between 150-200ms through consistent practice and training.
+    </FAQItem>
+    <FAQItem question="How can I improve my reaction time?" client:load>
+        Regular practice is key. Train daily for 10-15 minutes, stay hydrated, get adequate sleep, and maintain good physical fitness. Many gamers see improvement within 2-3 weeks of consistent practice. Focus and concentration also play a crucial role.
+    </FAQItem>
+    <FAQItem question="Why is my reaction time slow?" client:load>
+        Several factors affect reaction time: fatigue, distractions, lack of sleep, dehydration, or insufficient practice. Age and genetics also play a role, but training can significantly improve your baseline speed. Try testing at different times of day to find when you're sharpest.
+    </FAQItem>
+    <FAQItem question="Is 300ms reaction time bad?" client:load>
+        Not at all! 300ms is still within normal range for humans. The average person scores between 250-300ms. With practice, most people can improve to 200-250ms. What matters most is consistent improvement over time.
+    </FAQItem>
+    <FAQItem question="Do gamers have faster reaction times?" client:load>
+        Yes, studies show that regular gamers, especially FPS and MOBA players, typically have faster reaction times (150-220ms) compared to non-gamers. This is due to constant practice and the demands of competitive gaming requiring split-second decisions.
+    </FAQItem>
+    <FAQItem question="How accurate is this reaction time test?" client:load>
+        Our test uses precise millisecond timing and is calibrated for accuracy. However, factors like your device's refresh rate, input lag, and internet latency can affect results by 10-20ms. For most consistent results, use the same device and browser each time.
+    </FAQItem>
+    </FAQ>
+</FloatingFAQ>
