@@ -1,7 +1,13 @@
 import { $reactionState, $statistics } from "@/stores/reaction-state";
 import { Button, Link } from "@heroui/react";
 import { useStore } from "@nanostores/react";
-import { HistoryIcon, TrendingUp, Trophy, XIcon } from "lucide-react";
+import {
+    HistoryIcon,
+    ShieldCheck,
+    TrendingUp,
+    Trophy,
+    XIcon,
+} from "lucide-react";
 import React from "react";
 
 const RFooter = () => {
@@ -47,25 +53,33 @@ const RFooter = () => {
                         </div>
                     </div>
                 ) : (
-                    <p className="text-sm text-slate-300">
-                        Your data is never stored on any server. No Signups
-                        needed.
-                    </p>
+                    <>
+                        <p className="text-sm text-slate-300 ">
+                            <ShieldCheck
+                                className="inline-block text-success"
+                                size={18}
+                            />
+                            <span>
+                                &nbsp; Your data is never stored on any server.
+                                No Signups needed.
+                            </span>
+                        </p>
+                    </>
                 )}
             </div>
             <Button
                 size="sm"
                 className="shrink-0"
                 startContent={
-                    <HistoryIcon
+                    <TrendingUp
                         className="shrink-0"
                         size={16}
                     />
                 }
                 as={"a"}
-                href="/reaction-time-test/history"
+                href="/reaction-time-test/analytics"
             >
-                History
+                Analytics
             </Button>
         </div>
     );

@@ -23,8 +23,9 @@ const RContent = (
             }}
             role="button"
             tabIndex={0}
+            {...props}
             className={
-                "h-full flex justify-center items-center py-20 px-8 cursor-pointer select-none " +
+                "h-full flex justify-center items-center cursor-pointer select-none " +
                 props.className
             }
             {...handleMouseClick}

@@ -9,13 +9,17 @@ const RGreen = ({ handleClick }: { handleClick: () => void }) => {
             className="bg-green-600"
             aria-label="Green signal! Click now!"
         >
-            <div className="flex flex-col h-full items-center gap-4 text-white">
-                <Zap
-                    size={48}
-                    className="animate-pulse"
-                />
-                <h2 className="text-3xl font-bold">CLICK!</h2>
-                <p className="text-xl opacity-90">React as fast as you can</p>
+            <div>
+                <div className="flex flex-col h-full items-center gap-4 text-white">
+                    <Zap
+                        size={48}
+                        className="animate-pulse"
+                    />
+                    <h2 className="text-3xl font-bold">CLICK!</h2>
+                    <p className="text-xl opacity-90">
+                        React as fast as you can
+                    </p>
+                </div>
             </div>
         </RContent>
     );

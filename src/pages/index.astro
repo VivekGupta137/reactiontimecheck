@@ -6,6 +6,7 @@ import "../styles/global.css";
 import ReactionTest from "@/components/reaction-test/ReactionTest";
 import { getEntry } from "astro:content";
 import { render } from "astro:content";
+import ProductCard from "@/components/ProductCard";
 
 const matches = import.meta.glob("../content/*.{md,mdx}", {
     eager: true,
@@ -21,6 +22,26 @@ const { Content, headings } = await render(homepage);
 
 <BaseLayout>
     <ReactionTest client:load />
+    <div class="flex gap-2 justify-center my-10 flex-wrap px-4">
+        <ProductCard
+            icon={"zap"}
+            href="/reaction-time-test"
+            heading="Reaction Time"
+            client:load
+        >
+            Measure your reaction time with this simple test. Click as soon as
+            the screen turns green to see your results in milliseconds.
+        </ProductCard>
+        <ProductCard
+            icon={"keyboard"}
+            href="https://ninjatype.com"
+            heading="Typing Speed"
+            client:load
+        >
+            Test and improve your typing speed with NinjaType. Challenge
+            yourself with various texts and track your progress over time.
+        </ProductCard>
+    </div>
     <div
         class="prose dark:prose-invert prose-zinc w-full max-w-full px-2 md:px-6 lg:px-8"
     >

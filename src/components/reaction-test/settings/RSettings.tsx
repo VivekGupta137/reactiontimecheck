@@ -76,8 +76,7 @@ const RSettings = () => {
     return (
         <>
             <Button
-                startContent={<CogIcon size={16} />}
-                size="sm"
+                endContent={<CogIcon size={16} />}
                 color="warning"
                 variant="flat"
                 onPress={onOpen}

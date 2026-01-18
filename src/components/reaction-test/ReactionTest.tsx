@@ -9,6 +9,7 @@ import {
     CardBody,
     CardFooter,
     CardHeader,
+    cn,
     Divider,
     Link,
     Slider,
@@ -28,10 +29,18 @@ const ReactionTest = () => {
     return (
         <Card
             data-reaction-state={reactionState}
-            className="max-w-4xl mx-4 lg:mx-auto  shadow-xl"
+            className={cn(
+                "max-w-4xl mx-4 lg:mx-auto  shadow-xl ",
+                reactionState === "idle" ? "bg-black" : "bg-content1"
+            )}
         >
-            <CardHeader className="flex justify-between items-center flex-wrap gap-2">
-                <div className="flex items-center gap-2 ">
+            <CardHeader
+                className={cn(
+                    "flex justify-between items-center flex-wrap gap-2",
+                    reactionState === "idle" ? "invisible" : "visible"
+                )}
+            >
+                <div className={cn("flex items-center gap-2 ")}>
                     <Timer
                         className="text-primary shrink-0"
                         size={24}
@@ -47,30 +56,30 @@ const ReactionTest = () => {
                     </h1>
                 </div>
                 <div className="flex gap-2">
-                    {reactionState !== "idle" && (
-                        <Button
-                            size="sm"
-                            color="danger"
-                            variant="flat"
-                            startContent={<RotateCcw size={16} />}
-                            onPress={resetGame}
-                            aria-label="Restart test"
-                        >
-                            Restart
-                        </Button>
-                    )}
-                    {reactionState === "idle" && <RSettings />}
+                    <Button
+                        size="sm"
+                        color="danger"
+                        variant="flat"
+                        startContent={<RotateCcw size={16} />}
+                        onPress={resetGame}
+                        aria-label="Restart test"
+                    >
+                        Restart
+                    </Button>
                 </div>
             </CardHeader>
-            <Divider />
-            <CardBody className="p-0 h-full items-stretch">
+            {reactionState !== "idle" && <Divider />}
+
+            <CardBody className="p-0 h-100 flex items-center justify-center">
                 {reactionState === "idle" && <RIdle />}
                 {reactionState !== "idle" && <RStarted />}
             </CardBody>
-            <RSlider />
-            <CardFooter className="">
-                <RFooter />
-            </CardFooter>
+            <div>
+                <RSlider />
+                <CardFooter className="">
+                    <RFooter />
+                </CardFooter>
+            </div>
         </Card>
     );
 };
