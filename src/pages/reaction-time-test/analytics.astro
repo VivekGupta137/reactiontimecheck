@@ -1,7 +1,12 @@
 ---
+import RAnalytics from "@/components/reaction-test/analytics/RAnalytics";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 import "@/styles/global.css";
 ---
 
-<BaseLayout />
+<BaseLayout>
+    <div class="px-4">
+        <RAnalytics client:load />
+    </div>
+</BaseLayout>
