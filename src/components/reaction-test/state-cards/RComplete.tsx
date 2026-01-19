@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useStore } from "@nanostores/react";
-import { $statistics, resetGame } from "@/stores/reaction-state";
+import {
+    $statistics,
+    resetGame,
+    saveSessionResults,
+} from "@/stores/reaction-state";
 import { CheckCircle, RotateCcw } from "lucide-react";
 import RContent from "../RContent";
 import { $rtConfig } from "@/stores/reaction-settings";
@@ -19,9 +23,15 @@ const RComplete = ({ reactionTime, currentRound, onNext }: RCompleteProps) => {
     const MAX_ROUNDS = parseInt(rtConfig.maxRounds);
     const isGameComplete = currentRound >= MAX_ROUNDS;
 
+    useEffect(() => {
+        if (isGameComplete) {
+            saveSessionResults();
+        }
+    }, [isGameComplete]);
+
     const handleClick = () => {
         if (isGameComplete) {
-            // resetGame();
+            resetGame();
         } else {
             onNext();
         }
@@ -32,7 +42,7 @@ const RComplete = ({ reactionTime, currentRound, onNext }: RCompleteProps) => {
             handleClick={handleClick}
             className={cn(
                 "bg-gradient-to-br from-purple-600 to-purple-800",
-                isGameComplete ? "cursor-auto!" : "cursor-pointer"
+                isGameComplete ? "cursor-auto!" : "cursor-pointer",
             )}
             aria-label={
                 isGameComplete
@@ -65,7 +75,7 @@ const RComplete = ({ reactionTime, currentRound, onNext }: RCompleteProps) => {
                         <Button
                             color="warning"
                             variant="shadow"
-                            onPress={resetGame}
+                            onPress={handleClick}
                             startContent={<RotateCcw size={16} />}
                         >
                             Start New Test

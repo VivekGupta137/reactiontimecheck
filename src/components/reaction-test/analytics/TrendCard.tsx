@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Chip } from "@heroui/react";
+import { Card, Chip, Tooltip } from "@heroui/react";
 import { ArrowUpRight, ArrowDownRight, ArrowRight } from "lucide-react";
 import { cn } from "@heroui/react";
 
@@ -16,12 +16,13 @@ type TrendChipVariant =
 
 interface TrendCardProps {
     title: string;
-    value: string | number;
-    change: string;
+    value: string | number | null;
+    change: string | null;
     changeType: ChangeType;
     trendType: TrendType;
     trendChipPosition?: TrendChipPosition;
     trendChipVariant?: TrendChipVariant;
+    description?: string;
 }
 
 const getTrendIcon = (trendType: TrendType) => {
@@ -54,34 +55,60 @@ const TrendCard: React.FC<TrendCardProps> = ({
     trendType,
     trendChipPosition = "top",
     trendChipVariant = "light",
+    description,
 }) => {
+    const hasData = value !== null;
+    const hasChange = change !== null;
+
     return (
         <Card className="dark:border-default-100 border border-transparent">
             <div className="flex p-4">
                 <div className="flex flex-col gap-y-2">
-                    <dt className="text-small text-default-500 font-medium">
-                        {title}
+                    <dt className="text-small text-default-500 font-medium flex items-center gap-1">
+                        {description ? (
+                            <Tooltip
+                                content={description}
+                                placement="top"
+                            >
+                                <span className="cursor-help border-b border-dashed border-default-400">
+                                    {title}
+                                </span>
+                            </Tooltip>
+                        ) : (
+                            title
+                        )}
                     </dt>
-                    <dd className="text-default-700 text-2xl font-semibold">
-                        {value}
-                    </dd>
+                    {hasData ? (
+                        <>
+                            <dd className="text-default-700 text-2xl font-semibold">
+                                {value}
+                            </dd>
+                            {hasChange && (
+                                <Chip
+                                    className={cn("absolute right-4", {
+                                        "top-4": trendChipPosition === "top",
+                                        "bottom-4":
+                                            trendChipPosition === "bottom",
+                                    })}
+                                    classNames={{
+                                        content: "font-medium text-[0.65rem]",
+                                    }}
+                                    color={getChipColor(changeType)}
+                                    radius="sm"
+                                    size="sm"
+                                    startContent={getTrendIcon(trendType)}
+                                    variant={trendChipVariant}
+                                >
+                                    {change}
+                                </Chip>
+                            )}
+                        </>
+                    ) : (
+                        <dd className="text-default-400 text-lg font-medium">
+                            No data
+                        </dd>
+                    )}
                 </div>
-                <Chip
-                    className={cn("absolute right-4", {
-                        "top-4": trendChipPosition === "top",
-                        "bottom-4": trendChipPosition === "bottom",
-                    })}
-                    classNames={{
-                        content: "font-medium text-[0.65rem]",
-                    }}
-                    color={getChipColor(changeType)}
-                    radius="sm"
-                    size="sm"
-                    startContent={getTrendIcon(trendType)}
-                    variant={trendChipVariant}
-                >
-                    {change}
-                </Chip>
             </div>
         </Card>
     );

@@ -1,311 +1,467 @@
+import { computed } from "nanostores";
 import type {
     TimePeriod,
     MetricData,
-    ChartDataPoint,
     TrendMetricData,
+    ChartDataPoint,
 } from "@/stores/types";
+import {
+    getResultsForPeriod,
+    getTestStatistics,
+    $testResults,
+} from "@/stores/reaction-test-results";
+import { $selectedPeriod } from "@/stores/analytics-period";
+import {
+    getPeriodMs,
+    generateChartBuckets,
+    calculateAverageTimeBucket,
+    calculateBestTimeBucket,
+    calculateTotalAttemptsBucket,
+    calculateSuccessRateBucket,
+} from "@/components/utils/chart-helpers";
 
-// Helper to get date labels based on period
-export const getDateLabel = (period: TimePeriod, index: number): string => {
-    const now = new Date();
+// ===== COMPUTED STORES FOR PERIOD DATA =====
 
-    if (period === "24-hours") {
-        const hour = now.getHours() - (23 - index);
-        return `${hour < 0 ? hour + 24 : hour}:00`;
-    }
+/**
+ * Computed store for current period results
+ * Automatically updates when $selectedPeriod or $testResults changes
+ *
+ * Note: This store provides raw data that can be used by components to generate
+ * charts using the generateChartBuckets() helper from chart-helpers.ts.
+ * This decouples chart generation from stores, allowing multiple chart types
+ * to be created from the same data source.
+ */
+export const $currentPeriodResults = computed(
+    [$selectedPeriod, $testResults],
+    (period) => getResultsForPeriod(period),
+);
 
-    if (period === "7-days") {
-        const date = new Date(now);
-        date.setDate(date.getDate() - (6 - index));
-        return date.toLocaleDateString("en-US", { weekday: "short" });
-    }
+/**
+ * Computed store for current period statistics
+ * Automatically updates when $currentPeriodResults changes
+ */
+export const $currentPeriodStats = computed($currentPeriodResults, (results) =>
+    getTestStatistics(results),
+);
 
-    if (period === "30-days") {
-        const date = new Date(now);
-        date.setDate(date.getDate() - (29 - index));
-        const day = date.getDate();
-        const month = date.toLocaleDateString("en-US", { month: "short" });
-        return `${day} ${month}`;
-    }
+/**
+ * Computed store for previous period results
+ * Used for calculating change percentages
+ */
+export const $previousPeriodResults = computed(
+    [$selectedPeriod, $testResults],
+    (period) => {
+        const now = Date.now();
+        const periodMs = getPeriodMs(period);
+        const allResults = getResultsForPeriod(period);
+        return allResults.filter(
+            (r) =>
+                r.timestamp < now - periodMs &&
+                r.timestamp >= now - periodMs * 2,
+        );
+    },
+);
 
-    if (period === "3-months") {
-        const date = new Date(now);
-        date.setMonth(date.getMonth() - (2 - index));
-        return date.toLocaleDateString("en-US", { month: "short" });
-    }
+/**
+ * Computed store for previous period statistics
+ * Used for calculating change percentages
+ */
+export const $previousPeriodStats = computed(
+    $previousPeriodResults,
+    (results) => getTestStatistics(results),
+);
 
-    if (period === "6-months") {
-        const date = new Date(now);
-        date.setMonth(date.getMonth() - (5 - index));
-        return date.toLocaleDateString("en-US", { month: "short" });
-    }
+// ===== PRIMARY METRICS =====
 
-    return "";
-};
+/**
+ * Computed stores for primary metrics
+ * Automatically update when period or test results change
+ */
+export const $averageTime = computed(
+    [$selectedPeriod, $currentPeriodStats, $previousPeriodStats],
+    (period, stats, previousStats) => {
+        if (!stats) return { value: null, change: null };
 
-// Helper to get data points count based on period
-export const getDataPointsCount = (period: TimePeriod): number => {
-    switch (period) {
-        case "24-hours":
-            return 24;
-        case "7-days":
-            return 7;
-        case "30-days":
-            return 30;
-        case "3-months":
-            return 3;
-        case "6-months":
-            return 6;
-    }
-};
+        const change = previousStats
+            ? ((stats.average - previousStats.average) /
+                  previousStats.average) *
+              100
+            : 0;
 
-// Helper to get period multiplier for improvement over time
-export const getPeriodMultiplier = (period: TimePeriod): number => {
-    switch (period) {
-        case "24-hours":
-            return 1;
-        case "7-days":
-            return 0.98;
-        case "30-days":
-            return 0.95;
-        case "3-months":
-            return 0.92;
-        case "6-months":
-            return 0.88;
-    }
-};
-
-// ===== CHART DATA CALCULATORS =====
-
-export const calculateAverageTimeChart = (
-    period: TimePeriod,
-): ChartDataPoint[] => {
-    const dataPoints = getDataPointsCount(period);
-    return Array.from({ length: dataPoints }, (_, i) => {
-        const baseTime = 280;
-        const improvement = (i / dataPoints) * 40;
-        const variance = ((i * 7 + 13) % 20) - 10;
         return {
-            date: getDateLabel(period, i),
-            value: Math.round(baseTime - improvement + variance),
+            value: Math.round(stats.average),
+            change: Math.round(change * 10) / 10,
         };
-    });
-};
+    },
+);
 
-export const calculateBestTimeChart = (
-    period: TimePeriod,
-): ChartDataPoint[] => {
-    const dataPoints = getDataPointsCount(period);
-    return Array.from({ length: dataPoints }, (_, i) => {
-        const baseTime = 210;
-        const improvement = (i / dataPoints) * 30;
-        const variance = ((i * 11 + 7) % 15) - 7;
+export const $bestTime = computed(
+    [$selectedPeriod, $currentPeriodStats, $previousPeriodStats],
+    (period, stats, previousStats) => {
+        if (!stats) return { value: null, change: null };
+
+        const change = previousStats
+            ? ((stats.best - previousStats.best) / previousStats.best) * 100
+            : 0;
+
         return {
-            date: getDateLabel(period, i),
-            value: Math.round(baseTime - improvement + variance),
+            value: Math.round(stats.best),
+            change: Math.round(change * 10) / 10,
         };
-    });
-};
+    },
+);
 
-export const calculateTotalAttemptsChart = (
-    period: TimePeriod,
-): ChartDataPoint[] => {
-    const dataPoints = getDataPointsCount(period);
-    const baseAttempts = {
-        "24-hours": 1,
-        "7-days": 20,
-        "30-days": 20,
-        "3-months": 150,
-        "6-months": 300,
-    }[period];
+export const $totalAttempts = computed(
+    [$selectedPeriod, $currentPeriodResults, $previousPeriodResults],
+    (period, results, previousResults) => {
+        if (results.length === 0) return { value: null, change: null };
 
-    return Array.from({ length: dataPoints }, (_, i) => {
-        const growth = (i / dataPoints) * baseAttempts * 0.5;
-        const variance = (i * 13 + 5) % Math.floor(baseAttempts * 0.2);
+        const totalAttempts = results.reduce(
+            (sum, r) => sum + r.totalAttempts,
+            0,
+        );
+        const previousTotalAttempts = previousResults.reduce(
+            (sum, r) => sum + r.totalAttempts,
+            0,
+        );
+
+        const change =
+            previousTotalAttempts > 0
+                ? ((totalAttempts - previousTotalAttempts) /
+                      previousTotalAttempts) *
+                  100
+                : 0;
+
         return {
-            date: getDateLabel(period, i),
-            value: Math.round(baseAttempts + growth + variance),
+            value: totalAttempts,
+            change: Math.round(change * 10) / 10,
         };
-    });
-};
+    },
+);
 
-export const calculateSuccessRateChart = (
-    period: TimePeriod,
-): ChartDataPoint[] => {
-    const dataPoints = getDataPointsCount(period);
-    return Array.from({ length: dataPoints }, (_, i) => {
-        const baseRate = 82;
-        const improvement = (i / dataPoints) * 10;
-        const variance = ((i * 17 + 3) % 30) / 10 - 1.5;
+export const $successRate = computed(
+    [$selectedPeriod, $currentPeriodStats, $previousPeriodStats],
+    (period, stats, previousStats) => {
+        if (!stats) return { value: null, change: null };
+
+        const change = previousStats
+            ? stats.successRate - previousStats.successRate
+            : 0;
+
         return {
-            date: getDateLabel(period, i),
-            value: Math.round((baseRate + improvement + variance) * 10) / 10,
+            value: Math.round(stats.successRate * 10) / 10,
+            change: Math.round(change * 10) / 10,
         };
-    });
-};
+    },
+);
 
-// ===== METRIC DATA CALCULATORS =====
+// ===== CHART DATA =====
 
-export const calculateAverageTime = (period: TimePeriod): MetricData => {
-    const multiplier = getPeriodMultiplier(period);
-    return {
-        value: Math.round(280 * multiplier),
-        change:
-            period === "24-hours"
-                ? -1.2
-                : -Math.abs(((multiplier * 100) % 5) + 2),
-    };
-};
+export const $averageTimeChartData = computed(
+    [$selectedPeriod, $currentPeriodResults],
+    (period, results) =>
+        generateChartBuckets(period, results, calculateAverageTimeBucket),
+);
 
-export const calculateBestTime = (period: TimePeriod): MetricData => {
-    const multiplier = getPeriodMultiplier(period);
-    return {
-        value: Math.round(210 * multiplier),
-        change: -Math.abs(((multiplier * 200) % 8) + 3),
-    };
-};
+export const $bestTimeChartData = computed(
+    [$selectedPeriod, $currentPeriodResults],
+    (period, results) =>
+        generateChartBuckets(period, results, calculateBestTimeBucket),
+);
 
-export const calculateTotalAttempts = (period: TimePeriod): MetricData => {
-    const multiplier = getPeriodMultiplier(period);
-    const value = {
-        "24-hours": 24,
-        "7-days": 156,
-        "30-days": 680,
-        "3-months": 2100,
-        "6-months": 4500,
-    }[period];
+export const $totalAttemptsChartData = computed(
+    [$selectedPeriod, $currentPeriodResults],
+    (period, results) =>
+        generateChartBuckets(period, results, calculateTotalAttemptsBucket),
+);
 
-    return {
-        value,
-        change: ((multiplier * 300) % 20) + 5,
-    };
-};
+export const $successRateChartData = computed(
+    [$selectedPeriod, $currentPeriodResults],
+    (period, results) =>
+        generateChartBuckets(period, results, calculateSuccessRateBucket),
+);
 
-export const calculateSuccessRate = (period: TimePeriod): MetricData => {
-    const multiplier = getPeriodMultiplier(period);
-    return {
-        value: 85 + ((multiplier * 400) % 10),
-        change: ((multiplier * 500) % 3) + 1,
-    };
-};
+// ===== TREND METRICS =====
 
-// ===== TREND METRIC CALCULATORS =====
+/**
+ * Consistency Score: Measures variability in reaction times
+ * Lower coefficient of variation = higher consistency score (0-100)
+ */
+export const $consistencyScore = computed(
+    [$selectedPeriod, $currentPeriodResults],
+    (period, results) => {
+        if (results.length === 0) {
+            return {
+                value: null,
+                change: null,
+                changeType: "neutral",
+                trendType: "neutral",
+            } as const;
+        }
 
-export const calculateConsistencyScore = (
-    period: TimePeriod,
-): TrendMetricData => {
-    const multiplier = getPeriodMultiplier(period);
-    const value = 85 + ((multiplier * 400) % 12);
-    return {
-        value,
-        change: `+${(((multiplier * 100) % 5) + 1).toFixed(1)}%`,
-        changeType: "positive",
-        trendType: "up",
-    };
-};
+        const sessionTimes: number[] = [];
+        results.forEach((session) => {
+            const successfulAttempts =
+                session.totalAttempts - session.missCount;
+            if (successfulAttempts > 0) {
+                sessionTimes.push(session.avgReactionTime);
+            }
+        });
 
-export const calculateMedianTime = (period: TimePeriod): TrendMetricData => {
-    const multiplier = getPeriodMultiplier(period);
-    const value = Math.round(275 * multiplier);
-    return {
-        value,
-        change: `-${Math.round(((multiplier * 50) % 10) + 2)}ms`,
-        changeType: "positive",
-        trendType: "down",
-    };
-};
+        if (sessionTimes.length === 0) {
+            return {
+                value: null,
+                change: null,
+                changeType: "neutral",
+                trendType: "neutral",
+            } as const;
+        }
 
-export const calculateFalseStartRate = (
-    period: TimePeriod,
-): TrendMetricData => {
-    const multiplier = getPeriodMultiplier(period);
-    const value = 3.5 - multiplier * 1.5;
-    return {
-        value,
-        change: `-${(((multiplier * 100) % 0.8) + 0.2).toFixed(1)}%`,
-        changeType: "positive",
-        trendType: "down",
-    };
-};
+        if (sessionTimes.length === 1) {
+            return {
+                value: 75.0,
+                change: null,
+                changeType: "neutral",
+                trendType: "neutral",
+            } as const;
+        }
 
-export const calculatePersonalRecord = (
-    period: TimePeriod,
-): TrendMetricData => {
-    const multiplier = getPeriodMultiplier(period);
-    const value = Math.round(180 * multiplier);
-    return {
-        value,
-        change: `-${Math.round(((multiplier * 30) % 8) + 3)}ms`,
-        changeType: "positive",
-        trendType: "down",
-    };
-};
+        const mean =
+            sessionTimes.reduce((a, b) => a + b, 0) / sessionTimes.length;
+        const variance =
+            sessionTimes.reduce(
+                (sum, time) => sum + Math.pow(time - mean, 2),
+                0,
+            ) / sessionTimes.length;
+        const stdDev = Math.sqrt(variance);
+        const cv = (stdDev / mean) * 100;
+        const score = Math.max(0, Math.min(100, 100 * Math.exp(-cv / 20)));
 
-export const calculateLongestWinStreak = (
-    period: TimePeriod,
-): TrendMetricData => {
-    const multiplier = getPeriodMultiplier(period);
-    const value = Math.round(15 + ((multiplier * 100) % 20));
-    return {
-        value,
-        change: `+${Math.round(((multiplier * 50) % 5) + 1)}`,
-        changeType: "positive",
-        trendType: "up",
-    };
-};
+        return {
+            value: Math.round(score * 10) / 10,
+            change: null,
+            changeType: "neutral",
+            trendType: "neutral",
+        } as const;
+    },
+);
 
-export const calculatePracticeStreak = (
-    period: TimePeriod,
-): TrendMetricData => {
-    const multiplier = getPeriodMultiplier(period);
-    const value = {
-        "24-hours": 1,
-        "7-days": 7,
-        "30-days": 28,
-        "3-months": 75,
-        "6-months": 145,
-    }[period];
+export const $medianTime = computed(
+    [$selectedPeriod, $currentPeriodStats],
+    (period, stats) => {
+        if (!stats) {
+            return {
+                value: null,
+                change: null,
+                changeType: "neutral",
+                trendType: "neutral",
+            } as const;
+        }
 
-    return {
-        value,
-        change:
-            period === "24-hours"
-                ? "New!"
-                : `+${Math.round(((multiplier * 20) % 3) + 1)} days`,
-        changeType: "positive",
-        trendType: "up",
-    };
-};
+        return {
+            value: Math.round(stats.median),
+            change: null,
+            changeType: "neutral",
+            trendType: "neutral",
+        } as const;
+    },
+);
 
-export const calculatePercentileRank = (
-    period: TimePeriod,
-): TrendMetricData => {
-    const multiplier = getPeriodMultiplier(period);
-    const value = 15 - ((multiplier * 100) % 10);
-    return {
-        value,
-        change: `-${Math.round(((multiplier * 30) % 3) + 1)}%`,
-        changeType: "positive",
-        trendType: "down",
-    };
-};
+export const $personalRecord = computed(
+    [$selectedPeriod, $currentPeriodStats],
+    (period, stats) => {
+        if (!stats) {
+            return {
+                value: null,
+                change: null,
+                changeType: "neutral",
+                trendType: "neutral",
+            } as const;
+        }
 
-export const calculateTotalPracticeTime = (
-    period: TimePeriod,
-): TrendMetricData => {
-    const multiplier = getPeriodMultiplier(period);
-    const value = {
-        "24-hours": 45,
-        "7-days": 180,
-        "30-days": 520,
-        "3-months": 1850,
-        "6-months": 4200,
-    }[period];
+        return {
+            value: stats.best,
+            change: null,
+            changeType: "neutral",
+            trendType: "neutral",
+        } as const;
+    },
+);
 
-    return {
-        value,
-        change: `+${Math.round(((multiplier * 100) % 30) + 15)}m`,
-        changeType: "positive",
-        trendType: "up",
-    };
-};
+export const $longestWinStreak = computed(
+    [$selectedPeriod, $currentPeriodResults],
+    (period, results) => {
+        if (results.length === 0) {
+            return {
+                value: null,
+                change: null,
+                changeType: "neutral",
+                trendType: "neutral",
+            } as const;
+        }
+
+        const sortedSessions = [...results].sort(
+            (a, b) => a.timestamp - b.timestamp,
+        );
+
+        let currentStreak = 0;
+        let longestStreak = 0;
+
+        for (const session of sortedSessions) {
+            const successfulAttempts =
+                session.totalAttempts - session.missCount;
+
+            if (successfulAttempts > 0) {
+                currentStreak += successfulAttempts;
+                longestStreak = Math.max(longestStreak, currentStreak);
+            }
+
+            if (session.missCount > 0) {
+                currentStreak = 0;
+            }
+        }
+
+        return {
+            value: longestStreak,
+            change: null,
+            changeType: "neutral",
+            trendType: "neutral",
+        } as const;
+    },
+);
+
+export const $practiceStreak = computed(
+    [$selectedPeriod, $currentPeriodResults],
+    (period, results) => {
+        if (results.length === 0) {
+            return {
+                value: null,
+                change: null,
+                changeType: "neutral",
+                trendType: "neutral",
+            } as const;
+        }
+
+        const dayMap = new Map<string, boolean>();
+        results.forEach((r) => {
+            const day = new Date(r.timestamp).toDateString();
+            dayMap.set(day, true);
+        });
+
+        let streak = 0;
+        const today = new Date();
+
+        for (let i = 0; i < 365; i++) {
+            const checkDate = new Date(today);
+            checkDate.setDate(today.getDate() - i);
+            const dayStr = checkDate.toDateString();
+
+            if (dayMap.has(dayStr)) {
+                streak++;
+            } else if (i > 0) {
+                break;
+            }
+        }
+
+        return {
+            value: streak,
+            change: null,
+            changeType: "neutral",
+            trendType: "neutral",
+        } as const;
+    },
+);
+
+export const $percentileRank = computed(
+    [$selectedPeriod, $currentPeriodStats],
+    (period, stats) => {
+        if (!stats) {
+            return {
+                value: null,
+                change: null,
+                changeType: "neutral",
+                trendType: "neutral",
+            } as const;
+        }
+
+        // Calculate percentile based on normal distribution
+        // Using average population distribution: mean=270ms, stdDev=50ms
+        // (Same distribution as shown in the line chart)
+        const mean = 270;
+        const stdDev = 50;
+        const userTime = stats.average;
+
+        // Calculate z-score: how many standard deviations away from mean
+        const zScore = (userTime - mean) / stdDev;
+
+        // Cumulative Distribution Function (CDF) approximation using error function
+        // This gives us the percentage of people SLOWER than the user
+        const erfApprox = (x: number): number => {
+            // Abramowitz and Stegun approximation
+            const sign = x >= 0 ? 1 : -1;
+            const absX = Math.abs(x);
+
+            const t = 1 / (1 + 0.3275911 * absX);
+            const a1 = 0.254829592;
+            const a2 = -0.284496736;
+            const a3 = 1.421413741;
+            const a4 = -1.453152027;
+            const a5 = 1.061405429;
+
+            const erf =
+                1 -
+                ((((a5 * t + a4) * t + a3) * t + a2) * t + a1) *
+                    t *
+                    Math.exp(-absX * absX);
+
+            return sign * erf;
+        };
+
+        // CDF = 0.5 * (1 + erf(z / sqrt(2)))
+        const cdf = 0.5 * (1 + erfApprox(zScore / Math.sqrt(2)));
+
+        // CDF gives us the percentage of people FASTER than user (with time ≤ userTime)
+        // For "top X%" display: if 72% are faster than you, you're in the "top 72%" (from slowest end)
+        // But we want to show it as percentile rank where lower is better
+        const percentileFaster = cdf * 100;
+
+        // Since lower reaction time is better:
+        // - If 95% are faster than you (bad), show as 95th percentile or "Top 95%"
+        // - If 5% are faster than you (good), show as 5th percentile or "Top 5%"
+        const percentile = percentileFaster;
+
+        // Clamp between 0.1 and 99 for realistic display
+        const clampedPercentile = Math.max(0.1, Math.min(99, percentile));
+
+        return {
+            value: Math.round(clampedPercentile * 10) / 10,
+            change: null,
+            changeType: "neutral",
+            trendType: "neutral",
+        } as const;
+    },
+);
+
+export const $totalPracticeTime = computed(
+    [$selectedPeriod, $currentPeriodResults],
+    (period, results) => {
+        if (results.length === 0) {
+            return {
+                value: null,
+                change: null,
+                changeType: "neutral",
+                trendType: "neutral",
+            } as const;
+        }
+
+        const totalMs = results.reduce((sum, r) => sum + r.totalDuration, 0);
+        const totalMinutes = Math.round(totalMs / 60000);
+
+        return {
+            value: totalMinutes,
+            change: null,
+            changeType: "neutral",
+            trendType: "neutral",
+        } as const;
+    },
+);

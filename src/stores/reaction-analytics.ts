@@ -1,48 +1,38 @@
-import { atom, computed } from "nanostores";
-import { persistentAtom } from "@nanostores/persistent";
-import type {
-    TimePeriod,
-    MetricData,
-    ChartDataPoint,
-    TrendMetricData,
-} from "@/stores/types";
+import { computed } from "nanostores";
+import { $selectedPeriod } from "@/stores/analytics-period";
+import type { TimePeriod, MetricData, TrendMetricData } from "@/stores/types";
 import {
-    calculateAverageTime,
-    calculateAverageTimeChart,
-    calculateBestTime,
-    calculateBestTimeChart,
-    calculateConsistencyScore,
-    calculateFalseStartRate,
-    calculateLongestWinStreak,
-    calculateMedianTime,
-    calculatePercentileRank,
-    calculatePersonalRecord,
-    calculatePracticeStreak,
-    calculateSuccessRate,
-    calculateSuccessRateChart,
-    calculateTotalAttempts,
-    calculateTotalAttemptsChart,
-    calculateTotalPracticeTime,
+    $averageTime,
+    $bestTime,
+    $totalAttempts,
+    $successRate,
+    $consistencyScore,
+    $medianTime,
+    $personalRecord,
+    $longestWinStreak,
+    $practiceStreak,
+    $percentileRank,
+    $totalPracticeTime,
 } from "@/stores/metric-calculators";
+import { $hasTestResults } from "@/stores/reaction-test-results";
 
 // Re-export types for convenience
-export type { TimePeriod, MetricData, ChartDataPoint, TrendMetricData };
+export type { TimePeriod, MetricData, TrendMetricData };
 
+// Re-export $selectedPeriod for convenience
+export { $selectedPeriod } from "@/stores/analytics-period";
+
+/**
+ * Analytics data structure containing all metrics
+ */
 export interface AnalyticsData {
     averageTime: MetricData;
     bestTime: MetricData;
     totalAttempts: MetricData;
     successRate: MetricData;
-    chartData: {
-        averageTime: ChartDataPoint[];
-        bestTime: ChartDataPoint[];
-        totalAttempts: ChartDataPoint[];
-        successRate: ChartDataPoint[];
-    };
     trendMetrics: {
         consistencyScore: TrendMetricData;
         medianTime: TrendMetricData;
-        falseStartRate: TrendMetricData;
         personalRecord: TrendMetricData;
         longestWinStreak: TrendMetricData;
         practiceStreak: TrendMetricData;
@@ -51,123 +41,82 @@ export interface AnalyticsData {
     };
 }
 
-// Atomic store for selected period
-export const $selectedPeriod = persistentAtom<TimePeriod>(
-    "analytics-period",
-    "6-months",
-);
+/**
+ * Computed store that recalculates data when period or test results change
+ * Lazy evaluation ensures data is only generated when needed
+ */
+export const $currentPeriodData = computed(
+    [$selectedPeriod, $hasTestResults],
+    (period, hasData) => {
+        if (!hasData) {
+            // Return empty state when no data exists
+            return {
+                averageTime: { value: null, change: null },
+                bestTime: { value: null, change: null },
+                totalAttempts: { value: null, change: null },
+                successRate: { value: null, change: null },
+                trendMetrics: {
+                    consistencyScore: {
+                        value: null,
+                        change: null,
+                        changeType: "neutral" as const,
+                        trendType: "neutral" as const,
+                    },
+                    medianTime: {
+                        value: null,
+                        change: null,
+                        changeType: "neutral" as const,
+                        trendType: "neutral" as const,
+                    },
+                    personalRecord: {
+                        value: null,
+                        change: null,
+                        changeType: "neutral" as const,
+                        trendType: "neutral" as const,
+                    },
+                    longestWinStreak: {
+                        value: null,
+                        change: null,
+                        changeType: "neutral" as const,
+                        trendType: "neutral" as const,
+                    },
+                    practiceStreak: {
+                        value: null,
+                        change: null,
+                        changeType: "neutral" as const,
+                        trendType: "neutral" as const,
+                    },
+                    percentileRank: {
+                        value: null,
+                        change: null,
+                        changeType: "neutral" as const,
+                        trendType: "neutral" as const,
+                    },
+                    totalPracticeTime: {
+                        value: null,
+                        change: null,
+                        changeType: "neutral" as const,
+                        trendType: "neutral" as const,
+                    },
+                },
+            } as AnalyticsData;
+        }
 
-// Generate analytics data for a specific period
-const generatePeriodData = (period: TimePeriod): AnalyticsData => {
-    return {
-        // Primary metrics
-        averageTime: calculateAverageTime(period),
-        bestTime: calculateBestTime(period),
-        totalAttempts: calculateTotalAttempts(period),
-        successRate: calculateSuccessRate(period),
-
-        // Chart data
-        chartData: {
-            averageTime: calculateAverageTimeChart(period),
-            bestTime: calculateBestTimeChart(period),
-            totalAttempts: calculateTotalAttemptsChart(period),
-            successRate: calculateSuccessRateChart(period),
-        },
-
-        // Trend metrics
-        trendMetrics: {
-            consistencyScore: calculateConsistencyScore(period),
-            medianTime: calculateMedianTime(period),
-            falseStartRate: calculateFalseStartRate(period),
-            personalRecord: calculatePersonalRecord(period),
-            longestWinStreak: calculateLongestWinStreak(period),
-            practiceStreak: calculatePracticeStreak(period),
-            percentileRank: calculatePercentileRank(period),
-            totalPracticeTime: calculateTotalPracticeTime(period),
-        },
-    };
-};
-
-// Computed store for current period data - recalculates only when period changes
-export const $currentPeriodData = computed($selectedPeriod, (period) => {
-    return generatePeriodData(period);
-});
-
-// Computed stores for individual metrics - lazy evaluation
-export const $averageTime = computed(
-    $currentPeriodData,
-    (data) => data.averageTime,
+        // Use computed stores to get reactive data
+        return {
+            averageTime: $averageTime.get(),
+            bestTime: $bestTime.get(),
+            totalAttempts: $totalAttempts.get(),
+            successRate: $successRate.get(),
+            trendMetrics: {
+                consistencyScore: $consistencyScore.get(),
+                medianTime: $medianTime.get(),
+                personalRecord: $personalRecord.get(),
+                longestWinStreak: $longestWinStreak.get(),
+                practiceStreak: $practiceStreak.get(),
+                percentileRank: $percentileRank.get(),
+                totalPracticeTime: $totalPracticeTime.get(),
+            },
+        } as AnalyticsData;
+    },
 );
-export const $bestTime = computed($currentPeriodData, (data) => data.bestTime);
-export const $totalAttempts = computed(
-    $currentPeriodData,
-    (data) => data.totalAttempts,
-);
-export const $successRate = computed(
-    $currentPeriodData,
-    (data) => data.successRate,
-);
-
-// Computed stores for chart data
-export const $averageTimeChart = computed(
-    $currentPeriodData,
-    (data) => data.chartData.averageTime,
-);
-export const $bestTimeChart = computed(
-    $currentPeriodData,
-    (data) => data.chartData.bestTime,
-);
-export const $totalAttemptsChart = computed(
-    $currentPeriodData,
-    (data) => data.chartData.totalAttempts,
-);
-export const $successRateChart = computed(
-    $currentPeriodData,
-    (data) => data.chartData.successRate,
-);
-
-// Computed stores for trend metrics
-export const $consistencyScore = computed(
-    $currentPeriodData,
-    (data) => data.trendMetrics.consistencyScore,
-);
-export const $medianTime = computed(
-    $currentPeriodData,
-    (data) => data.trendMetrics.medianTime,
-);
-export const $falseStartRate = computed(
-    $currentPeriodData,
-    (data) => data.trendMetrics.falseStartRate,
-);
-export const $personalRecord = computed(
-    $currentPeriodData,
-    (data) => data.trendMetrics.personalRecord,
-);
-export const $longestWinStreak = computed(
-    $currentPeriodData,
-    (data) => data.trendMetrics.longestWinStreak,
-);
-export const $practiceStreak = computed(
-    $currentPeriodData,
-    (data) => data.trendMetrics.practiceStreak,
-);
-export const $percentileRank = computed(
-    $currentPeriodData,
-    (data) => data.trendMetrics.percentileRank,
-);
-export const $totalPracticeTime = computed(
-    $currentPeriodData,
-    (data) => data.trendMetrics.totalPracticeTime,
-);
-
-// Helper action to reset analytics (regenerates data)
-export const resetAnalyticsData = () => {
-    // Simply reset the period to trigger recalculation
-    const current = $selectedPeriod.get();
-    $selectedPeriod.set("6-months");
-    if (current === "6-months") {
-        // Force update if already at default
-        $selectedPeriod.set("24-hours");
-        $selectedPeriod.set("6-months");
-    }
-};

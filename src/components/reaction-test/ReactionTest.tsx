@@ -31,13 +31,13 @@ const ReactionTest = () => {
             data-reaction-state={reactionState}
             className={cn(
                 "max-w-4xl mx-4 lg:mx-auto  shadow-xl ",
-                reactionState === "idle" ? "bg-black" : "bg-content1"
+                reactionState === "idle" ? "bg-black" : "bg-content1",
             )}
         >
             <CardHeader
                 className={cn(
                     "flex justify-between items-center flex-wrap gap-2",
-                    reactionState === "idle" ? "invisible" : "visible"
+                    reactionState === "idle" ? "invisible" : "visible",
                 )}
             >
                 <div className={cn("flex items-center gap-2 ")}>
@@ -61,7 +61,7 @@ const ReactionTest = () => {
                         color="danger"
                         variant="flat"
                         startContent={<RotateCcw size={16} />}
-                        onPress={resetGame}
+                        onPress={() => resetGame()}
                         aria-label="Restart test"
                     >
                         Restart

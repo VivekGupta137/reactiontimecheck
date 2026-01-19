@@ -25,6 +25,7 @@ const AnalyticsMetrics: React.FC<AnalyticsMetricsProps> = ({
                         isActive={activeMetric === key}
                         formatValue={config.format}
                         onClick={() => onMetricClick?.(key)}
+                        description={config.description}
                     />
                 ))}
             </div>

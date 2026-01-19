@@ -7,8 +7,8 @@ export type TimePeriod =
     | "6-months";
 
 export interface MetricData {
-    value: number;
-    change: number; // percentage change
+    value: number | null;
+    change: number | null; // percentage change
 }
 
 export interface ChartDataPoint {
@@ -17,8 +17,8 @@ export interface ChartDataPoint {
 }
 
 export interface TrendMetricData {
-    value: number;
-    change: string; // e.g., "+5%", "-2.3ms", "+3 days"
+    value: number | null;
+    change: string | null; // e.g., "+5%", "-2.3ms", "+3 days"
     changeType: "positive" | "neutral" | "negative";
     trendType: "up" | "neutral" | "down";
 }

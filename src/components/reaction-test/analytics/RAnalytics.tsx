@@ -14,10 +14,17 @@ import {
 import {
     $selectedPeriod,
     $currentPeriodData,
-    resetAnalyticsData,
 } from "@/stores/reaction-analytics";
+import {
+    $averageTimeChartData,
+    $bestTimeChartData,
+    $totalAttemptsChartData,
+    $successRateChartData,
+} from "@/stores/metric-calculators";
+import { clearTestResults } from "@/stores/reaction-test-results";
+import { generateDummyData } from "@/stores/dummy-data-generator";
 import type { TimePeriod } from "@/stores/types";
-import { MoreVertical } from "lucide-react";
+import { DeleteIcon, MoreVertical, Trash2, RefreshCw } from "lucide-react";
 import AnalyticsTabs from "./AnalyticsTabs";
 import AnalyticsMetrics from "./AnalyticsMetrics";
 import AnalyticsChart from "./AnalyticsChart";
@@ -30,20 +37,50 @@ const RAnalytics = () => {
     const [activeMetric, setActiveMetric] = useState<string>("averageTime");
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+    // Chart data stores
+    const averageTimeChart = useStore($averageTimeChartData);
+    const bestTimeChart = useStore($bestTimeChartData);
+    const totalAttemptsChart = useStore($totalAttemptsChartData);
+    const successRateChart = useStore($successRateChartData);
+
+    // Get chart data based on active metric
     const chartData =
-        currentData.chartData[
-            activeMetric as keyof typeof currentData.chartData
-        ] || currentData.chartData.averageTime;
+        {
+            averageTime: averageTimeChart,
+            bestTime: bestTimeChart,
+            totalAttempts: totalAttemptsChart,
+            successRate: successRateChart,
+        }[activeMetric] || averageTimeChart;
+
+    // Determine metric type for chart formatting
+    const getMetricType = (
+        metric: string,
+    ): "time" | "attempts" | "percentage" => {
+        if (metric === "totalAttempts") return "attempts";
+        if (metric === "successRate") return "percentage";
+        return "time";
+    };
 
     const handleClearData = () => {
-        resetAnalyticsData();
+        clearTestResults();
         onOpenChange();
     };
 
+    const handleFillDummyData = () => {
+        clearTestResults();
+        generateDummyData("6-months");
+    };
+
     return (
-        <Card className="relative max-w-3xl mx-auto">
+        <Card
+            className="relative max-w-3xl mx-auto"
+            suppressHydrationWarning
+        >
             <CardHeader className="flex flex-col gap-y-2 p-6">
-                <div className="flex flex-col gap-y-2 w-full">
+                <div
+                    className="flex flex-col gap-y-2 w-full"
+                    suppressHydrationWarning
+                >
                     <div className="flex flex-col gap-y-0">
                         <dt className="text-medium text-foreground font-medium">
                             Analytics
@@ -65,8 +102,14 @@ const RAnalytics = () => {
                     />
                 </div>
             </CardHeader>
-            <CardBody className="p-0">
-                <AnalyticsChart data={chartData} />
+            <CardBody
+                className="p-0"
+                suppressHydrationWarning
+            >
+                <AnalyticsChart
+                    data={chartData}
+                    metricType={getMetricType(activeMetric)}
+                />
                 <div className="p-6 pt-4">
                     <TrendMetrics data={currentData} />
                 </div>
@@ -84,11 +127,21 @@ const RAnalytics = () => {
                     </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Analytics Actions">
+                    {import.meta.env.DEV ? (
+                        <DropdownItem
+                            key="fill-dummy"
+                            color="warning"
+                            onPress={handleFillDummyData}
+                            endContent={<RefreshCw size={16} />}
+                        >
+                            Fill Dummy Data
+                        </DropdownItem>
+                    ) : null}
                     <DropdownItem
-                        key="delete"
-                        className="text-danger"
                         color="danger"
+                        key="clear"
                         onPress={onOpen}
+                        endContent={<Trash2 size={16} />}
                     >
                         Clear All Data
                     </DropdownItem>

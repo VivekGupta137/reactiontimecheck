@@ -7,18 +7,31 @@ import {
     ResponsiveContainer,
     Tooltip,
 } from "recharts";
-import type { ChartDataPoint } from "@/stores/reaction-analytics";
+import type { ChartDataPoint } from "@/stores/types";
 
 interface AnalyticsChartProps {
     data: ChartDataPoint[];
+    metricType?: "time" | "attempts" | "percentage";
 }
 
-const CustomTooltip = ({ active, payload }: any) => {
+const CustomTooltip = ({ active, payload, metricType }: any) => {
     if (active && payload && payload.length) {
         const value = payload[0].value;
-        // Format based on the value range (time values are typically 150-400, attempts are higher)
-        const formattedValue =
-            value < 100 ? `${value}%` : value > 400 ? value : `${value}ms`;
+        let formattedValue: string;
+
+        // Format based on metric type
+        switch (metricType) {
+            case "percentage":
+                formattedValue = `${value}%`;
+                break;
+            case "attempts":
+                formattedValue = value.toLocaleString();
+                break;
+            case "time":
+            default:
+                formattedValue = `${value}ms`;
+                break;
+        }
 
         return (
             <div className="rounded-medium bg-foreground text-tiny shadow-small flex h-auto min-w-30 items-center gap-x-2 p-2">
@@ -36,7 +49,28 @@ const CustomTooltip = ({ active, payload }: any) => {
     return null;
 };
 
-const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ data }) => {
+const AnalyticsChart: React.FC<AnalyticsChartProps> = ({
+    data,
+    metricType = "time",
+}) => {
+    if (!data || data.length === 0) {
+        return (
+            <div
+                className="flex items-center justify-center min-h-75 bg-default-50 rounded-medium mx-4"
+                style={{ height: 300 }}
+            >
+                <div className="text-center">
+                    <p className="text-default-400 text-lg font-medium">
+                        No data available
+                    </p>
+                    <p className="text-default-300 text-sm mt-2">
+                        Complete some reaction tests to see your analytics
+                    </p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div
             className="recharts-responsive-container min-h-75"
@@ -87,7 +121,9 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ data }) => {
                         textAnchor="end"
                         height={60}
                     />
-                    <Tooltip content={<CustomTooltip />} />
+                    <Tooltip
+                        content={<CustomTooltip metricType={metricType} />}
+                    />
                     <Area
                         type="monotone"
                         dataKey="value"

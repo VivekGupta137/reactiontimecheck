@@ -9,48 +9,10 @@ import {
 } from "recharts";
 import { RechartsDevtools } from "@recharts/devtools";
 
-/**
- * Generates data for a normal distribution curve representing reaction time
- * @param mean - Mean reaction time in ms (default: 250)
- * @param stdDev - Standard deviation in ms (default: 40)
- * @param minTime - Minimum time on x-axis (default: 0)
- * @param maxTime - Maximum time on x-axis (default: 600)
- * @param points - Number of data points to generate (default: 100)
- * @returns Array of data points with reactionTime (ms) and percentile (%)
- */
-const generateReactionTimeDistribution = (
-    mean: number = 250,
-    stdDev: number = 40,
-    minTime: number = 0,
-    maxTime: number = 500,
-    points: number = 100
-) => {
-    const data = [];
-    const step = (maxTime - minTime) / points;
-
-    for (let i = 0; i <= points; i++) {
-        const x = minTime + i * step;
-        // Normal distribution probability density function
-        const exponent = -Math.pow(x - mean, 2) / (2 * Math.pow(stdDev, 2));
-        const coefficient = 1 / (stdDev * Math.sqrt(2 * Math.PI));
-        const y = coefficient * Math.exp(exponent);
-
-        // Convert to percentage for better readability (scale up)
-        const percentile = y * 100 * stdDev;
-
-        data.push({
-            reactionTime: Math.round(x),
-            percentile: parseFloat(percentile.toFixed(2)),
-        });
-    }
-
-    return data;
-};
-
 const generateCombinedData = (
     minTime: number = 0,
     maxTime: number = 500,
-    points: number = 300
+    points: number = 300,
 ) => {
     const step = (maxTime - minTime) / points;
     const data = [];

@@ -28,16 +28,14 @@ const ClearDataModal: React.FC<ClearDataModalProps> = ({
                 {(onClose) => (
                     <>
                         <ModalHeader className="flex flex-col gap-1">
-                            Clear Analytics Data
+                            Clear All Analytics Data
                         </ModalHeader>
                         <ModalBody>
                             <p>
-                                Are you sure you want to delete all analytics
-                                data? This will permanently remove all reaction
-                                time records, attempts, and historical data from
-                                your browser's storage.
+                                This will permanently delete all reaction time
+                                test results from your browser's local storage.
                             </p>
-                            <p className="text-danger font-semibold">
+                            <p className="text-danger font-semibold mt-2">
                                 This action cannot be undone.
                             </p>
                         </ModalBody>

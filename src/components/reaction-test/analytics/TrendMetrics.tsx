@@ -26,6 +26,7 @@ const TrendMetrics: React.FC<TrendMetricsProps> = ({ data }) => {
                             data.trendMetrics.consistencyScore.changeType
                         }
                         trendType={data.trendMetrics.consistencyScore.trendType}
+                        description={TREND_METRICS.consistencyScore.description}
                     />
                     <TrendCard
                         title={TREND_METRICS.medianTime.title}
@@ -35,15 +36,7 @@ const TrendMetrics: React.FC<TrendMetricsProps> = ({ data }) => {
                         change={data.trendMetrics.medianTime.change}
                         changeType={data.trendMetrics.medianTime.changeType}
                         trendType={data.trendMetrics.medianTime.trendType}
-                    />
-                    <TrendCard
-                        title={TREND_METRICS.falseStartRate.title}
-                        value={TREND_METRICS.falseStartRate.format(
-                            data.trendMetrics.falseStartRate.value,
-                        )}
-                        change={data.trendMetrics.falseStartRate.change}
-                        changeType={data.trendMetrics.falseStartRate.changeType}
-                        trendType={data.trendMetrics.falseStartRate.trendType}
+                        description={TREND_METRICS.medianTime.description}
                     />
                 </div>
             </div>
@@ -62,6 +55,7 @@ const TrendMetrics: React.FC<TrendMetricsProps> = ({ data }) => {
                         change={data.trendMetrics.personalRecord.change}
                         changeType={data.trendMetrics.personalRecord.changeType}
                         trendType={data.trendMetrics.personalRecord.trendType}
+                        description={TREND_METRICS.personalRecord.description}
                     />
                     <TrendCard
                         title={TREND_METRICS.longestWinStreak.title}
@@ -73,6 +67,7 @@ const TrendMetrics: React.FC<TrendMetricsProps> = ({ data }) => {
                             data.trendMetrics.longestWinStreak.changeType
                         }
                         trendType={data.trendMetrics.longestWinStreak.trendType}
+                        description={TREND_METRICS.longestWinStreak.description}
                     />
                     <TrendCard
                         title={TREND_METRICS.practiceStreak.title}
@@ -82,6 +77,7 @@ const TrendMetrics: React.FC<TrendMetricsProps> = ({ data }) => {
                         change={data.trendMetrics.practiceStreak.change}
                         changeType={data.trendMetrics.practiceStreak.changeType}
                         trendType={data.trendMetrics.practiceStreak.trendType}
+                        description={TREND_METRICS.practiceStreak.description}
                     />
                 </div>
             </div>
@@ -100,6 +96,7 @@ const TrendMetrics: React.FC<TrendMetricsProps> = ({ data }) => {
                         change={data.trendMetrics.percentileRank.change}
                         changeType={data.trendMetrics.percentileRank.changeType}
                         trendType={data.trendMetrics.percentileRank.trendType}
+                        description={TREND_METRICS.percentileRank.description}
                     />
                     <TrendCard
                         title={TREND_METRICS.totalPracticeTime.title}
@@ -112,6 +109,9 @@ const TrendMetrics: React.FC<TrendMetricsProps> = ({ data }) => {
                         }
                         trendType={
                             data.trendMetrics.totalPracticeTime.trendType
+                        }
+                        description={
+                            TREND_METRICS.totalPracticeTime.description
                         }
                     />
                 </div>

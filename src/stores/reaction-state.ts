@@ -1,5 +1,6 @@
 import { atom, computed, onSet } from "nanostores";
 import { $rtConfig } from "./reaction-settings";
+import { addTestResult } from "./reaction-test-results";
 
 export type ReactionState =
     | "idle" // didn't click start button yet
@@ -20,6 +21,7 @@ export const $attemptTimes = atom<
         type: "tooSoon" | "valid";
     }[]
 >([]); // Track times for all attempts
+export const $sessionStartTime = atom<number | null>(null); // Track session start timestamp
 
 // Computed statistics
 export const $statistics = computed([$attemptTimes], (attemptTimes) => {
@@ -42,7 +44,7 @@ export const $statistics = computed([$attemptTimes], (attemptTimes) => {
     const best = Math.min(...times);
     const worst = Math.max(...times);
     const miss = attemptTimes.filter(
-        (attempt) => attempt.type === "tooSoon"
+        (attempt) => attempt.type === "tooSoon",
     ).length;
 
     return {
@@ -77,11 +79,47 @@ export function incrementAttempt({
     $attemptTimes.set([...attemptTimes, { rt, type }]);
 }
 
+export function saveSessionResults() {
+    console.log("saveSessionResults");
+
+    const statistics = $statistics.get();
+    const sessionStartTime = $sessionStartTime.get();
+    const config = $rtConfig.get();
+
+    if (statistics.validCount === 0) {
+        return;
+    }
+
+    const sessionEndTime = Date.now();
+    let totalDuration: number;
+
+    if (sessionStartTime) {
+        // Use actual session duration if available
+        totalDuration = sessionEndTime - sessionStartTime;
+    } else {
+        // Calculate estimate using config delays and reaction times
+        const minDelay = parseInt(config.minDelayMS);
+        const maxDelay = parseInt(config.maxDelayMS);
+        const avgWaitTime = (minDelay + maxDelay) / 2;
+        totalDuration =
+            statistics.attemptCount * (avgWaitTime + statistics.average);
+    }
+
+    addTestResult({
+        avgReactionTime: statistics.average,
+        bestReactionTime: statistics.best,
+        missCount: statistics.missCount,
+        totalAttempts: statistics.attemptCount,
+        totalDuration: Math.round(totalDuration),
+    });
+}
+
 export function resetGame() {
     $reactionState.set("idle");
     $currentRound.set(0);
     $reactionTimes.set([]);
     $attemptTimes.set([]);
+    $sessionStartTime.set(null);
 }
 
 // Reset counters when starting a new game
@@ -90,5 +128,6 @@ onSet($reactionState, ({ newValue }) => {
         $currentRound.set(0);
         $reactionTimes.set([]);
         $attemptTimes.set([]);
+        $sessionStartTime.set(Date.now());
     }
 });
