@@ -4,12 +4,26 @@ import BaseHead from "@/layouts/BaseHead.astro";
 
 import "@/styles/global.css";
 import ReactionTest from "@/components/reaction-test/ReactionTest";
+import { getEntry } from "astro:content";
+import { render } from "astro:content";
+import Markdown from "@/components/Markdown.astro";
+
+const rttContent = await getEntry("content", "reaction-time-test");
+const { Content, headings } = await render(rttContent!);
 ---
 
 <BaseLayout>
     <BaseHead
         slot="head"
-        title="Reaction Time Test"
+        title="Reaction Time Test – Free Online Speed & Reflex Test"
+    />
+    <meta
+        slot="head"
+        name="description"
+        content="Test your reaction time instantly with our free online reaction speed test. Measure reflex speed, compare averages, and improve your response time."
     />
     <ReactionTest client:load />
+    <Markdown headings={headings}>
+        <Content />
+    </Markdown>
 </BaseLayout>

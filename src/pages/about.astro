@@ -1,0 +1,27 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import BaseHead from "@/layouts/BaseHead.astro";
+import Markdown from "@/components/Markdown.astro";
+import "@/styles/global.css";
+
+import { render } from "astro:content";
+import { getEntry } from "astro:content";
+
+const aboutContent = await getEntry("content", "about");
+const { Content, headings } = await render(aboutContent!);
+---
+
+<BaseLayout>
+    <BaseHead
+        slot="head"
+        title="About Us – ReactionTimeCheck Reaction Time & Brain Training Tools"
+    />
+    <meta
+        slot="head"
+        name="description"
+        content="Learn about ReactionTimeCheck, the team behind free reaction time tests and brain training tools. Our mission is to build accurate, fast, and fun performance measurement tools."
+    />
+    <Markdown headings={headings}>
+        <Content />
+    </Markdown>
+</BaseLayout>

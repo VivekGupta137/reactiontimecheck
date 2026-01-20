@@ -25,7 +25,10 @@ const FAQItem: React.FC<FAQItemProps> = ({
                     data-slot="trigger"
                     className="flex w-full h-full gap-3 items-center tap-highlight-transparent outline-solid outline-transparent data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 transition-opacity py-4 md:py-6"
                     type="button"
-                    onClick={() => setIsOpen(!isOpen)}
+                    onClick={() => {
+                        console.log("clicked");
+                        setIsOpen(!isOpen);
+                    }}
                     aria-expanded={isOpen}
                 >
                     <div className="flex-1 flex flex-col text-start">

@@ -21,7 +21,12 @@ const RIdle = () => {
                         color="primary"
                         variant="shadow"
                         onPress={() => transitionStateTo("started")}
-                        endContent={<Mouse size={16} />}
+                        endContent={
+                            <Mouse
+                                size={16}
+                                className="animate-blink"
+                            />
+                        }
                     >
                         Start Test
                     </Button>

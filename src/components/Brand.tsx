@@ -4,7 +4,7 @@ import React from "react";
 const Brand = () => {
     return (
         <a
-            href="#"
+            href="/"
             className="flex items-center justify-center"
         >
             <ClockCheck size={25} />

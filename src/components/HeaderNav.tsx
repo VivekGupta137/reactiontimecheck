@@ -8,13 +8,13 @@ import {
     Button,
 } from "@heroui/react";
 import { Clock1, ClockCheck } from "lucide-react";
+import Brand from "./Brand";
 
 const HeaderNav = () => {
     return (
         <Navbar>
             <NavbarBrand className="gap-2">
-                <ClockCheck />
-                <p className="font-bold text-inherit">ReactionTimeCheck</p>
+                <Brand />
             </NavbarBrand>
         </Navbar>
     );

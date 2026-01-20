@@ -76,13 +76,13 @@ const Footer = () => {
                     </Link>
                     <Link
                         className="text-small text-default-500"
-                        href="#"
+                        href="/about"
                     >
                         About
                     </Link>
                     <Link
                         className="text-small text-default-500"
-                        href="#"
+                        href="/tips"
                     >
                         Tips
                     </Link>
