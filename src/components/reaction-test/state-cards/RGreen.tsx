@@ -6,7 +6,7 @@ const RGreen = ({ handleClick }: { handleClick: () => void }) => {
     return (
         <RContent
             handleClick={handleClick}
-            className="bg-green-600"
+            className="bg-green-600 "
             aria-label="Green signal! Click now!"
         >
             <div>

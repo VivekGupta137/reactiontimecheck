@@ -86,12 +86,6 @@ const Footer = () => {
                     >
                         Tips
                     </Link>
-                    <Link
-                        className="text-small text-default-500"
-                        href="#"
-                    >
-                        Blog
-                    </Link>
                 </div>
 
                 {/* Spacer */}

@@ -6,7 +6,7 @@ const RWaiting = ({ handleClick }: { handleClick: () => void }) => {
     return (
         <RContent
             handleClick={handleClick}
-            className="bg-red-600"
+            className="bg-red-600 "
             aria-label="Waiting for green signal. Click when it turns green."
         >
             <div>
