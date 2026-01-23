@@ -12,6 +12,7 @@ import RTooSoon from "./RTooSoon";
 import RGreen from "./RGreen";
 import RComplete from "./RComplete";
 import { $rtConfig } from "@/stores/reaction-settings";
+import { motion, type HTMLMotionProps } from "framer-motion";
 
 const RStarted = () => {
     const reactionState = useStore($reactionState);
@@ -78,7 +79,12 @@ const RStarted = () => {
     }, [currentRound]);
 
     return (
-        <div className="w-full h-full">
+        <motion.div
+            whileTap={{
+                scale: 0.97,
+            }}
+            className="w-full h-full "
+        >
             {reactionState === "waiting" && (
                 <RWaiting handleClick={handleClick} />
             )}
@@ -93,7 +99,7 @@ const RStarted = () => {
                     onNext={handleNextRound}
                 />
             )}
-        </div>
+        </motion.div>
     );
 };
 

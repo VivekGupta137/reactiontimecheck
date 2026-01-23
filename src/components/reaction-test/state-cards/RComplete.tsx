@@ -9,7 +9,7 @@ import { CheckCircle, RotateCcw } from "lucide-react";
 import RContent from "../RContent";
 import { $rtConfig } from "@/stores/reaction-settings";
 import { cn } from "@heroui/theme";
-import { Button } from "@heroui/react";
+import { addToast, Button } from "@heroui/react";
 
 interface RCompleteProps {
     reactionTime: number | null;
@@ -31,7 +31,15 @@ const RComplete = ({ reactionTime, currentRound, onNext }: RCompleteProps) => {
 
     const handleClick = () => {
         if (isGameComplete) {
-            resetGame();
+            // do nothing, handled by button
+            addToast({
+                title: "Test Complete! 🎉",
+                description:
+                    "Great job! Click the 'Start New Test' button below to begin a fresh test.",
+                color: "success",
+                shouldShowTimeoutProgress: true,
+                timeout: 4000,
+            });
         } else {
             onNext();
         }
@@ -72,14 +80,17 @@ const RComplete = ({ reactionTime, currentRound, onNext }: RCompleteProps) => {
                         </p>
                     )}
                     {isGameComplete && (
-                        <Button
-                            color="warning"
-                            variant="shadow"
-                            onPress={handleClick}
-                            startContent={<RotateCcw size={16} />}
-                        >
-                            Start New Test
-                        </Button>
+                        <>
+                            <Button
+                                color="warning"
+                                variant="shadow"
+                                onPress={resetGame}
+                                startContent={<RotateCcw size={16} />}
+                                size="lg"
+                            >
+                                Start New Test
+                            </Button>
+                        </>
                     )}
                 </div>
             </div>
