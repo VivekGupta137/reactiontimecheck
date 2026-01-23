@@ -6,31 +6,40 @@ const RContent = (
     props: {
         children: React.ReactNode;
         handleClick: () => void;
-    } & HTMLAttributes<HTMLDivElement>
+    } & HTMLAttributes<HTMLDivElement>,
 ) => {
     const rtConfig = useStore($rtConfig);
+    const {
+        handleClick,
+        children,
+        "aria-label": ariaLabel,
+        ...htmlprops
+    } = props;
+
     const handleMouseClick =
         rtConfig.mouseClick === "onpress"
-            ? { onMouseDown: props.handleClick }
-            : { onClick: props.handleClick };
+            ? { onMouseDown: handleClick }
+            : { onClick: handleClick };
+
     return (
         <div
             onKeyDown={(e) => {
                 if (e.key === " " || e.key === "Enter") {
                     e.preventDefault();
-                    props.handleClick();
+                    handleClick();
                 }
             }}
             role="button"
             tabIndex={0}
-            {...props}
+            aria-label={ariaLabel || "Reaction test area"}
+            {...htmlprops}
+            {...handleMouseClick}
             className={
                 "h-full flex justify-center items-center cursor-pointer select-none " +
                 props.className
             }
-            {...handleMouseClick}
         >
-            {props.children}
+            {children}
         </div>
     );
 };

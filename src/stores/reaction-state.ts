@@ -80,8 +80,6 @@ export function incrementAttempt({
 }
 
 export function saveSessionResults() {
-    console.log("saveSessionResults");
-
     const statistics = $statistics.get();
     const sessionStartTime = $sessionStartTime.get();
     const config = $rtConfig.get();

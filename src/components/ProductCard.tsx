@@ -17,7 +17,7 @@ const ProductCard = (
         children: ReactNode;
         icon?: "zap" | "keyboard";
         href?: string;
-    }
+    },
 ) => {
     const cardProps = {
         ...props,
@@ -34,12 +34,10 @@ const ProductCard = (
         >
             <Button
                 isIconOnly
-                className="absolute top-2 right-2 z-20"
+                className="absolute top-2 right-2 z-20 pointer-events-none"
                 radius="full"
                 size="sm"
                 variant="light"
-                as={"a"}
-                href={props.href}
             >
                 <ExternalLink
                     className="text-default-400"

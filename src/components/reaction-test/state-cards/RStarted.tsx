@@ -33,7 +33,6 @@ const RStarted = () => {
         const delay = minDelay + Math.random() * maxDelay;
 
         timeoutRef.current = window.setTimeout(() => {
-            console.log("Screen is green now!");
             startTimeRef.current = performance.now();
             transitionStateTo("green");
         }, delay);
