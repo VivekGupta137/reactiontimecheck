@@ -73,46 +73,51 @@ const RAnalytics = () => {
 
     return (
         <Card
-            className="relative max-w-3xl mx-auto"
+            className="relative max-w-6xl mx-auto shadow-lg"
             suppressHydrationWarning
         >
-            <CardHeader className="flex flex-col gap-y-2 p-6">
+            <CardHeader className="flex flex-col gap-y-3 p-6 pb-4 bg-gradient-to-br from-default-50 to-default-100">
                 <div
-                    className="flex flex-col gap-y-2 w-full"
+                    className="flex flex-col gap-y-4 w-full"
                     suppressHydrationWarning
                 >
-                    <div className="flex flex-col gap-y-0">
-                        <dt className="text-medium text-foreground font-medium">
-                            Analytics
-                        </dt>
+                    <div className="flex items-center justify-between">
+                        <h2 className="text-2xl font-bold text-foreground">
+                            Performance Analytics
+                        </h2>
                     </div>
-                    <span
-                        aria-hidden="true"
-                        className="w-px h-px block"
-                        style={{ marginLeft: "0.25rem", marginTop: "0.5rem" }}
-                    />
                     <AnalyticsTabs
                         selectedPeriod={selectedPeriod}
                         onPeriodChange={(period) => $selectedPeriod.set(period)}
                     />
+                </div>
+            </CardHeader>
+            <CardBody
+                className="p-6 space-y-6"
+                suppressHydrationWarning
+            >
+                <div className="space-y-2">
+                    <h3 className="text-sm font-semibold text-default-600 px-1">
+                        Key Metrics
+                    </h3>
                     <AnalyticsMetrics
                         data={currentData}
                         activeMetric={activeMetric}
                         onMetricClick={setActiveMetric}
                     />
                 </div>
-            </CardHeader>
-            <CardBody
-                className="p-0"
-                suppressHydrationWarning
-            >
-                <AnalyticsChart
-                    data={chartData}
-                    metricType={getMetricType(activeMetric)}
-                />
-                <div className="p-6 pt-4">
-                    <TrendMetrics data={currentData} />
+                <div className="space-y-2">
+                    <h3 className="text-sm font-semibold text-default-600 px-1">
+                        Performance Chart
+                    </h3>
+                    <div className="bg-default-50 rounded-lg overflow-hidden border border-default-200">
+                        <AnalyticsChart
+                            data={chartData}
+                            metricType={getMetricType(activeMetric)}
+                        />
+                    </div>
                 </div>
+                <TrendMetrics data={currentData} />
             </CardBody>
             <Dropdown>
                 <DropdownTrigger>

@@ -15,20 +15,18 @@ const AnalyticsMetrics: React.FC<AnalyticsMetricsProps> = ({
     onMetricClick,
 }) => {
     return (
-        <div className="mt-2 flex w-full items-center">
-            <div className="grid grid-cols-1 sm:grid-cols-2  w-full gap-3 py-3">
-                {Object.entries(METRICS).map(([key, config]) => (
-                    <AnalyticsMetricCard
-                        key={key}
-                        title={config.title}
-                        data={data[key as MetricKey]}
-                        isActive={activeMetric === key}
-                        formatValue={config.format}
-                        onClick={() => onMetricClick?.(key)}
-                        description={config.description}
-                    />
-                ))}
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full gap-4">
+            {Object.entries(METRICS).map(([key, config]) => (
+                <AnalyticsMetricCard
+                    key={key}
+                    title={config.title}
+                    data={data[key as MetricKey]}
+                    isActive={activeMetric === key}
+                    formatValue={config.format}
+                    onClick={() => onMetricClick?.(key)}
+                    description={config.description}
+                />
+            ))}
         </div>
     );
 };

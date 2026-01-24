@@ -9,13 +9,13 @@ interface TrendMetricsProps {
 
 const TrendMetrics: React.FC<TrendMetricsProps> = ({ data }) => {
     return (
-        <div className="mt-6">
+        <div className="space-y-6">
             {/* Performance Metrics Section */}
-            <div className="mb-6">
-                <h3 className="text-sm font-semibold text-default-600 mb-3 px-1">
+            <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-default-600 px-1">
                     Performance Metrics
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
                     <TrendCard
                         title={TREND_METRICS.consistencyScore.title}
                         value={TREND_METRICS.consistencyScore.format(
@@ -42,11 +42,11 @@ const TrendMetrics: React.FC<TrendMetricsProps> = ({ data }) => {
             </div>
 
             {/* Progress Tracking Section */}
-            <div className="mb-6">
-                <h3 className="text-sm font-semibold text-default-600 mb-3 px-1">
+            <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-default-600 px-1">
                     Progress Tracking
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <TrendCard
                         title={TREND_METRICS.personalRecord.title}
                         value={TREND_METRICS.personalRecord.format(
@@ -83,11 +83,11 @@ const TrendMetrics: React.FC<TrendMetricsProps> = ({ data }) => {
             </div>
 
             {/* Comparative & Training Metrics Section */}
-            <div>
-                <h3 className="text-sm font-semibold text-default-600 mb-3 px-1">
+            <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-default-600 px-1">
                     Insights
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <TrendCard
                         title={TREND_METRICS.percentileRank.title}
                         value={TREND_METRICS.percentileRank.format(

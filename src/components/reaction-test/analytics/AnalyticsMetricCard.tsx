@@ -37,9 +37,9 @@ const AnalyticsMetricCard: React.FC<AnalyticsMetricCardProps> = ({
         <Card
             isPressable={hasData}
             onPress={hasData ? onClick : undefined}
-            className={`transition-colors ${isActive ? "bg-default-100" : ""}`}
+            className={`transition-all duration-200 ${isActive ? "bg-primary-50 border-2 border-primary shadow-md" : "hover:shadow-md hover:border-default-300"}`}
         >
-            <CardBody className="flex flex-col gap-2 p-3">
+            <CardBody className="flex flex-col gap-3 p-4">
                 {description ? (
                     <Tooltip
                         content={description}
@@ -63,8 +63,8 @@ const AnalyticsMetricCard: React.FC<AnalyticsMetricCardProps> = ({
                     </span>
                 )}
                 {hasData && formattedValue ? (
-                    <div className="flex items-center gap-x-3">
-                        <span className="text-foreground text-3xl font-bold">
+                    <div className="flex items-baseline gap-x-2">
+                        <span className="text-foreground text-2xl font-bold">
                             {formattedValue}
                         </span>
                         <Chip
@@ -73,8 +73,8 @@ const AnalyticsMetricCard: React.FC<AnalyticsMetricCardProps> = ({
                             size="sm"
                             startContent={getTrendIcon(data.change!)}
                             classNames={{
-                                base: "h-6",
-                                content: "px-1 pl-0.5 font-medium text-tiny",
+                                base: "h-5",
+                                content: "px-1 pl-0.5 font-semibold text-tiny",
                             }}
                         >
                             {Math.abs(data.change!).toFixed(1)}%
@@ -82,7 +82,7 @@ const AnalyticsMetricCard: React.FC<AnalyticsMetricCardProps> = ({
                     </div>
                 ) : (
                     <div className="flex items-center gap-x-2">
-                        <span className="text-default-400 text-xl font-medium">
+                        <span className="text-default-400 text-lg font-medium">
                             No data
                         </span>
                     </div>
