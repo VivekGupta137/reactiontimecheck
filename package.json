@@ -10,7 +10,10 @@
     },
     "dependencies": {
         "@astrojs/mdx": "^4.3.13",
+        "@astrojs/partytown": "^2.1.4",
         "@astrojs/react": "^4.4.2",
+        "@astrojs/sitemap": "^3.7.0",
+        "@fontsource/inter": "^5.2.8",
         "@heroui/react": "^2.8.7",
         "@heroui/system": "^2.4.25",
         "@heroui/theme": "^2.4.25",
@@ -22,6 +25,8 @@
         "@types/react": "^19.2.8",
         "@types/react-dom": "^19.2.3",
         "astro": "^5.16.10",
+        "astro-og-canvas": "^0.10.0",
+        "astro-seo": "^1.1.0",
         "framer-motion": "^12.26.2",
         "lucide-react": "^0.562.0",
         "nanostores": "^1.1.0",
@@ -30,6 +35,9 @@
         "react-hook-form": "^7.71.1",
         "recharts": "^3.6.0",
         "rehype-autolink-headings": "^7.1.0",
+        "satori": "^0.19.1",
+        "satori-html": "^0.3.2",
+        "sharp": "^0.34.5",
         "tailwindcss": "^4.1.18"
     },
     "devDependencies": {

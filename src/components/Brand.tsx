@@ -7,7 +7,11 @@ const Brand = () => {
             href="/"
             className="flex items-center justify-center"
         >
-            <ClockCheck size={25} />
+            <img
+                src="/favicon.svg"
+                alt="Logo"
+                className="h-6 w-6 "
+            />
             <span className="text-medium font-bold ml-2">
                 ReactionTimeCheck
             </span>

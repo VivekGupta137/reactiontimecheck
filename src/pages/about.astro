@@ -11,16 +11,11 @@ const aboutContent = await getEntry("content", "about");
 const { Content, headings } = await render(aboutContent!);
 ---
 
-<BaseLayout>
-    <BaseHead
-        slot="head"
-        title="About Us – ReactionTimeCheck Reaction Time & Brain Training Tools"
-    />
-    <meta
-        slot="head"
-        name="description"
-        content="Learn about ReactionTimeCheck, the team behind free reaction time tests and brain training tools. Our mission is to build accurate, fast, and fun performance measurement tools."
-    />
+<BaseLayout
+    title="About Us - ReactionTimeCheck Reaction Time & Brain Training Tools"
+    description="Learn about ReactionTimeCheck, the team behind free reaction time tests and brain training tools. Our mission is to build accurate, fast, and fun performance measurement tools."
+    image="/open-graph/about.png"
+>
     <Markdown headings={headings}>
         <Content />
     </Markdown>

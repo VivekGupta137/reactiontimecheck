@@ -7,6 +7,7 @@ import ReactionTest from "@/components/reaction-test/ReactionTest";
 import { getEntry } from "astro:content";
 import { render } from "astro:content";
 import ProductCard from "@/components/ProductCard";
+import StructuredData from "@/components/StructuredData.astro";
 
 const matches = import.meta.glob("../content/*.{md,mdx}", {
     eager: true,
@@ -20,14 +21,22 @@ if (!homepage) {
 const { Content, headings } = await render(homepage);
 ---
 
-<BaseLayout>
+<BaseLayout
+    title="Reaction Time Check - Test Your Gaming Reflexes Online"
+    description="Free online reaction time test. Measure your reaction speed, track your progress, and improve your gaming reflexes. Compare your results with pro gamers."
+    image="/open-graph/home.png"
+>
+    <StructuredData
+        slot="head"
+        type="WebSite"
+    />
     <ReactionTest client:load />
     <div class="flex gap-2 justify-center my-10 flex-wrap px-4">
         <ProductCard
             icon={"zap"}
             href="/reaction-time-test"
             heading="Reaction Time"
-            client:load
+            client:idle
         >
             Measure your reaction time with this simple test. Click as soon as
             the screen turns green to see your results in milliseconds.
@@ -36,7 +45,7 @@ const { Content, headings } = await render(homepage);
             icon={"keyboard"}
             href="https://ninjatype.com"
             heading="Typing Speed"
-            client:load
+            client:idle
         >
             Test and improve your typing speed with NinjaType. Challenge
             yourself with various texts and track your progress over time.

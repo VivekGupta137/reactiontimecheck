@@ -10,16 +10,11 @@ const tipsContent = await getEntry("content", "improvement-tips");
 const { Content } = await render(tipsContent!);
 ---
 
-<BaseLayout>
-    <BaseHead
-        slot="head"
-        title="Tips to Improve Reaction Time, Typing Speed & Focus | ReactionTimeCheck"
-    />
-    <meta
-        slot="head"
-        name="description"
-        content="Learn proven tips to improve your reaction time, typing speed, focus, and cognitive performance. Free training advice from ReactionTimeCheck."
-    />
+<BaseLayout
+    title="How to Improve Reaction Time for Gaming - Proven Tips & Training"
+    description="Learn proven tips to improve your reaction time for gaming, FPS titles, and esports. Expert training advice to boost your reflexes and response speed."
+    image="/open-graph/tips.png"
+>
     <Markdown>
         <Content />
     </Markdown>

@@ -9,9 +9,15 @@ import react from "@astrojs/react";
 
 import mdx from "@astrojs/mdx";
 
+import sitemap from "@astrojs/sitemap";
+
+import partytown from "@astrojs/partytown";
+
 // https://astro.build/config
 export default defineConfig({
     output: "static",
+    site: "https://reactiontimecheck.com",
+    trailingSlash: "never",
     vite: {
         plugins: [tailwindcss()],
     },
@@ -43,7 +49,16 @@ export default defineConfig({
         ],
     },
 
-    integrations: [react(), mdx()],
+    integrations: [
+        react(),
+        mdx(),
+        sitemap(),
+        partytown({
+            config: {
+                forward: ["dataLayer.push"],
+            },
+        }),
+    ],
     build: {
         concurrency: 20,
     },

@@ -1,0 +1,37 @@
+---
+interface Props {
+    type?: "WebSite" | "WebPage" | "Article" | "SoftwareApplication";
+    title?: string;
+    description?: string;
+    url?: string;
+}
+
+const { type = "WebSite", title, description, url } = Astro.props;
+const siteUrl = Astro.site?.toString() || "https://reactiontimecheck.com";
+const currentUrl = url || new URL(Astro.url.pathname, siteUrl).toString();
+
+const structuredData = {
+    "@context": "https://schema.org",
+    "@type": type,
+    name: title || "Reaction Time Check",
+    description:
+        description ||
+        "Test your reaction time and improve your gaming reflexes",
+    url: currentUrl,
+    ...(type === "WebSite" && {
+        potentialAction: {
+            "@type": "SearchAction",
+            target: {
+                "@type": "EntryPoint",
+                urlTemplate: `${siteUrl}/search?q={search_term_string}`,
+            },
+            "query-input": "required name=search_term_string",
+        },
+    }),
+};
+---
+
+<script
+    type="application/ld+json"
+    set:html={JSON.stringify(structuredData)}
+/>

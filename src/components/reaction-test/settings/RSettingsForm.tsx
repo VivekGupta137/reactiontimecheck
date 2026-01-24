@@ -33,7 +33,7 @@ const RSettingsForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
                 />
             </FormList>
             <FormList
-                title="Mouse Click setting"
+                title="Click Register Mode"
                 error={errors.mouseClick?.message as string}
             >
                 <FormTabs

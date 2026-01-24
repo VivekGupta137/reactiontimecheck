@@ -5,7 +5,7 @@ import {
     resetGame,
     saveSessionResults,
 } from "@/stores/reaction-state";
-import { CheckCircle, RotateCcw } from "lucide-react";
+import { CheckCircle, RotateCcw, Share2 } from "lucide-react";
 import RContent from "../RContent";
 import { $rtConfig } from "@/stores/reaction-settings";
 import { cn } from "@heroui/theme";
@@ -38,10 +38,36 @@ const RComplete = ({ reactionTime, currentRound, onNext }: RCompleteProps) => {
                     "Great job! Click the 'Start New Test' button below to begin a fresh test.",
                 color: "success",
                 shouldShowTimeoutProgress: true,
-                timeout: 4000,
+                timeout: 5000,
             });
         } else {
             onNext();
+        }
+    };
+
+    const handleShare = async () => {
+        const shareText = `I just hit ${statistics.average}ms average reaction time on Reaction Time Check! ⚡ Can you beat me? ${window.location.origin}/reaction-time-test`;
+
+        try {
+            if (navigator.share) {
+                await navigator.share({
+                    title: "My Reaction Time Score",
+                    text: shareText,
+                    url: `${window.location.origin}/reaction-time-test`,
+                });
+            } else {
+                // Fallback: Copy to clipboard
+                await navigator.clipboard.writeText(shareText);
+            }
+            addToast({
+                title: "Copied to clipboard!",
+                description: "Share your score with friends",
+                color: "success",
+                timeout: 5000,
+                shouldShowTimeoutProgress: true,
+            });
+        } catch (error) {
+            console.error("Error sharing:", error);
         }
     };
 
@@ -89,6 +115,15 @@ const RComplete = ({ reactionTime, currentRound, onNext }: RCompleteProps) => {
                                 size="lg"
                             >
                                 Start New Test
+                            </Button>
+                            <Button
+                                color="default"
+                                variant="ghost"
+                                onPress={handleShare}
+                                startContent={<Share2 size={16} />}
+                                size="lg"
+                            >
+                                Share My Score
                             </Button>
                         </>
                     )}

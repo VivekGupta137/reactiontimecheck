@@ -9,7 +9,7 @@ interface FAQItemProps {
 const FAQItem: React.FC<FAQItemProps> = ({
     question,
     children,
-    defaultOpen = false,
+    defaultOpen = true,
 }) => {
     const [isOpen, setIsOpen] = useState(defaultOpen);
 
