@@ -10,6 +10,9 @@ import {
     DropdownMenu,
     DropdownItem,
     useDisclosure,
+    CardFooter,
+    Divider,
+    Link,
 } from "@heroui/react";
 import {
     $selectedPeriod,
@@ -24,7 +27,14 @@ import {
 import { clearTestResults } from "@/stores/reaction-test-results";
 import { generateDummyData } from "@/stores/dummy-data-generator";
 import type { TimePeriod } from "@/stores/types";
-import { DeleteIcon, MoreVertical, Trash2, RefreshCw } from "lucide-react";
+import {
+    DeleteIcon,
+    MoreVertical,
+    Trash2,
+    RefreshCw,
+    ShieldCheck,
+    ExternalLink,
+} from "lucide-react";
 import AnalyticsTabs from "./AnalyticsTabs";
 import AnalyticsMetrics from "./AnalyticsMetrics";
 import AnalyticsChart from "./AnalyticsChart";
@@ -75,6 +85,7 @@ const RAnalytics = () => {
         <Card
             className="relative max-w-6xl mx-auto shadow-lg"
             suppressHydrationWarning
+            isFooterBlurred
         >
             <CardHeader className="flex flex-col gap-y-3 p-6 pb-4 bg-gradient-to-br from-default-50 to-default-100">
                 <div
@@ -158,6 +169,30 @@ const RAnalytics = () => {
                 onOpenChange={onOpenChange}
                 onConfirm={handleClearData}
             />
+            <Divider />
+            <CardFooter className="justify-between">
+                <p className="text-sm text-slate-300 ">
+                    <ShieldCheck
+                        className="inline-block text-success"
+                        size={18}
+                    />
+                    <span>&nbsp; Your data is never stored on any server.</span>
+                </p>
+                <Link
+                    showAnchorIcon
+                    anchorIcon={
+                        <ExternalLink
+                            size={14}
+                            className="ml-2"
+                        />
+                    }
+                    underline="hover"
+                    href="/reaction-time-test"
+                    className="text-sm text-default-500"
+                >
+                    &larr; Back to Reaction Test
+                </Link>
+            </CardFooter>
         </Card>
     );
 };

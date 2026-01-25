@@ -61,7 +61,6 @@ const RFooter = () => {
                             />
                             <span>
                                 &nbsp; Your data is never stored on any server.
-                                No Signups needed.
                             </span>
                         </p>
                     </>
