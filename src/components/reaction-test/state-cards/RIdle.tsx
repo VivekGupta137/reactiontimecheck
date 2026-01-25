@@ -7,12 +7,12 @@ import RSettings from "../settings/RSettings";
 const RIdle = () => {
     return (
         <div className="flex flex-col">
-            <h1 className="text-3xl font-bold text-center">
+            <h2 className="text-3xl font-bold text-center">
                 Test Your Reaction Speed
-            </h1>
-            <h2 className="text-center">
-                Click when the screen turns green. Results in milliseconds.
             </h2>
+            <h3 className="text-center">
+                Click when the screen turns green. Results in milliseconds.
+            </h3>
 
             <div className="self-center mt-8 mb-0">
                 <div className="flex gap-2">
