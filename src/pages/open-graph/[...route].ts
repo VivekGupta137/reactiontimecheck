@@ -1,7 +1,8 @@
 import type { APIRoute } from "astro";
+import { getCollection } from "astro:content";
 import sharp from "sharp";
 
-const pages = {
+let pages = {
     home: {
         title: "Check Reaction Time",
         description:
@@ -24,7 +25,26 @@ const pages = {
         title: "About Check Reaction Time",
         description: "Free Reaction Time Tests Brain Training Tools",
     },
+    blogs: {
+        title: "Reaction Time Blogs",
+        description:
+            "Read Our Latest Articles on Improving Reaction Time for Gaming",
+    },
 };
+
+const blogs = await getCollection("blogs");
+const blogPages = blogs.reduce(
+    (acc, blog) => {
+        acc[blog.id] = {
+            title: blog.data.title,
+            description: blog.data.description,
+        };
+        return acc;
+    },
+    {} as Record<string, { title: string; description: string }>,
+);
+
+pages = { ...pages, ...blogPages };
 
 const escape = (text: string) =>
     text

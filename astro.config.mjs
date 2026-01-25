@@ -17,7 +17,7 @@ import partytown from "@astrojs/partytown";
 export default defineConfig({
     output: "static",
     site: "https://checkreactiontime.com",
-    trailingSlash: "never",
+
     vite: {
         plugins: [tailwindcss()],
     },

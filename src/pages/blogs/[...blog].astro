@@ -1,0 +1,30 @@
+---
+import Markdown from "@/components/Markdown.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { render } from "astro:content";
+import { getEntry } from "astro:content";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+    const allBlogs = await getCollection("blogs");
+
+    return allBlogs
+        .filter((blog) => !blog.data.draft)
+        .map((blog) => ({
+            params: { blog: blog.id },
+        }));
+}
+const { blog } = Astro.params;
+const blogContent = await getEntry("blogs", blog);
+const { Content, headings } = await render(blogContent!);
+---
+
+<BaseLayout
+    title={`${blogContent?.data.title} - Check Reaction Time Blog`}
+    description={blogContent?.data.description || ""}
+    image={`/open-graph/${blogContent?.id}.png`}
+>
+    <Markdown headings={headings}>
+        <Content />
+    </Markdown>
+</BaseLayout>

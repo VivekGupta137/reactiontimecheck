@@ -1,0 +1,31 @@
+---
+import BlogCard from "@/components/BlogCard";
+import Markdown from "@/components/Markdown.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const allTipsBlog = await getCollection("blogs");
+---
+
+<BaseLayout
+    title="Blogs - Check Reaction Time"
+    description="Read our latest blogs on improving your reaction time for gaming, tips and tricks, and more."
+    image="/open-graph/blogs.png"
+>
+    <Markdown>
+        <h1>Blogs</h1>
+        {
+            allTipsBlog
+                .filter((blog) => !blog.data.draft)
+                .map((blog) => (
+                    <BlogCard
+                        heading={blog.data.title}
+                        href={`/blogs/${blog.id}`}
+                        updatedAt={blog.data?.updatedOn}
+                    >
+                        {blog.data.description}
+                    </BlogCard>
+                ))
+        }
+    </Markdown>
+</BaseLayout>

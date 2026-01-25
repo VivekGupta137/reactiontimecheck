@@ -86,6 +86,12 @@ const Footer = () => {
                     >
                         Tips
                     </Link>
+                    <Link
+                        className="text-small text-default-500"
+                        href="/blogs"
+                    >
+                        Blog
+                    </Link>
                 </div>
 
                 {/* Spacer */}
@@ -116,7 +122,7 @@ const Footer = () => {
                     </Link>
                     <Link
                         className="text-medium text-default-400"
-                        href="https://linkedin.com"
+                        href="https://www.linkedin.com/in/vivek-gupta-visa/"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="LinkedIn"
