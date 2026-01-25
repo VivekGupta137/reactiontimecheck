@@ -46,7 +46,7 @@ const RComplete = ({ reactionTime, currentRound, onNext }: RCompleteProps) => {
     };
 
     const handleShare = async () => {
-        const shareText = `I just hit ${statistics.average}ms average reaction time on Reaction Time Check! ⚡ Can you beat me? ${window.location.origin}/reaction-time-test`;
+        const shareText = `I just hit ${statistics.average}ms average reaction time on Check Reaction Time! ⚡ Can you beat me? ${window.location.origin}/reaction-time-test`;
 
         try {
             if (navigator.share) {

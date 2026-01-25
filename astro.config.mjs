@@ -16,7 +16,7 @@ import partytown from "@astrojs/partytown";
 // https://astro.build/config
 export default defineConfig({
     output: "static",
-    site: "https://reactiontimecheck.com",
+    site: "https://checkreactiontime.com",
     trailingSlash: "never",
     vite: {
         plugins: [tailwindcss()],

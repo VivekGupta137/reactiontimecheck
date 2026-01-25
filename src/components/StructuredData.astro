@@ -7,13 +7,13 @@ interface Props {
 }
 
 const { type = "WebSite", title, description, url } = Astro.props;
-const siteUrl = Astro.site?.toString() || "https://reactiontimecheck.com";
+const siteUrl = Astro.site?.toString() || "https://checkreactiontime.com";
 const currentUrl = url || new URL(Astro.url.pathname, siteUrl).toString();
 
 const structuredData = {
     "@context": "https://schema.org",
     "@type": type,
-    name: title || "Reaction Time Check",
+    name: title || "Check Reaction Time",
     description:
         description ||
         "Test your reaction time and improve your gaming reflexes",

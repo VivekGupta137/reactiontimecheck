@@ -22,4 +22,4 @@ User-agent: cohere-ai
 Disallow: /
 
 # Sitemap location
-Sitemap: https://reactiontimecheck.com/sitemap-index.xml
+Sitemap: https://checkreactiontime.com/sitemap-index.xml

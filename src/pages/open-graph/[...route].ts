@@ -3,7 +3,7 @@ import sharp from "sharp";
 
 const pages = {
     home: {
-        title: "Reaction Time Check",
+        title: "Check Reaction Time",
         description:
             "Test Your Gaming Reflexes Online - Free Reaction Speed Test",
     },
@@ -21,7 +21,7 @@ const pages = {
         description: "Proven Tips Training to Boost Your Gaming Reflexes",
     },
     about: {
-        title: "About Reaction Time Check",
+        title: "About Check Reaction Time",
         description: "Free Reaction Time Tests Brain Training Tools",
     },
 };

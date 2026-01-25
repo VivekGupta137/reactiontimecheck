@@ -13,7 +13,7 @@ const Brand = () => {
                 className="h-6 w-6 "
             />
             <span className="text-medium font-bold ml-2">
-                ReactionTimeCheck
+                CheckReactionTime
             </span>
         </a>
     );

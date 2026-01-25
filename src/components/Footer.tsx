@@ -98,7 +98,7 @@ const Footer = () => {
                 <div className="flex justify-center gap-x-4">
                     <Link
                         className="text-medium text-default-400"
-                        href="https://github.com"
+                        href="https://github.com/VivekGupta137/reactiontimecheck"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="GitHub"
@@ -133,7 +133,7 @@ const Footer = () => {
 
                 {/* Copyright */}
                 <p className="text-small text-default-400 mt-1 text-center">
-                    © {new Date().getFullYear()} Reaction Time Test. All rights
+                    © {new Date().getFullYear()} Check Reaction Time. All rights
                     reserved.
                 </p>
             </div>
