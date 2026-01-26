@@ -1,6 +1,12 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import NMemoryTest from "@/components/number-memory/NMemoryTest";
+import { render } from "astro:content";
+import { getEntry } from "astro:content";
+import Markdown from "@/components/Markdown.astro";
+
+const nmtest = await getEntry("content", "number-memory-test");
+const { Content, headings } = await render(nmtest!);
 ---
 
 <BaseLayout
@@ -9,4 +15,7 @@ import NMemoryTest from "@/components/number-memory/NMemoryTest";
     image="/open-graph/number-memory.png"
 >
     <NMemoryTest client:load />
+    <Markdown headings={headings}>
+        <Content />
+    </Markdown>
 </BaseLayout>
