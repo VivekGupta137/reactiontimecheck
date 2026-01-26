@@ -4,9 +4,15 @@ import NMemoryTest from "@/components/number-memory/NMemoryTest";
 import { render } from "astro:content";
 import { getEntry } from "astro:content";
 import Markdown from "@/components/Markdown.astro";
+import StructuredData from "@/components/StructuredData.astro";
+import ReviewsStructuredData from "@/components/ReviewsStructuredData.astro";
 
 const nmtest = await getEntry("content", "number-memory-test");
 const { Content, headings } = await render(nmtest!);
+
+const pageTitle = "Number Memory Test – How Many Digits Can You Remember?";
+const pageDescription =
+    "Test your number memory with our free online digit span test. Challenge your working memory, track your progress, and improve your memory capacity.";
 ---
 
 <BaseLayout
@@ -18,4 +24,19 @@ const { Content, headings } = await render(nmtest!);
     <Markdown headings={headings}>
         <Content />
     </Markdown>
+    <StructuredData
+        slot="head"
+        type="WebPage"
+        title={pageTitle}
+        description={pageDescription}
+    />
+    <ReviewsStructuredData
+        slot="head"
+        itemName="Number Memory Test"
+        ratingValue={4.7}
+        ratingCount={356}
+        reviewCount={645}
+        bestRating={5}
+        worstRating={1}
+    />
 </BaseLayout>

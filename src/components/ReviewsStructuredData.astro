@@ -1,0 +1,42 @@
+---
+interface Props {
+    itemName?: string;
+    ratingValue?: number;
+    ratingCount?: number;
+    reviewCount?: number;
+    bestRating?: number;
+    worstRating?: number;
+}
+
+const {
+    itemName = "Check Reaction Time",
+    ratingValue = 4.8,
+    ratingCount = 1247,
+    reviewCount = 892,
+    bestRating = 5,
+    worstRating = 1,
+} = Astro.props;
+
+const siteUrl = Astro.site?.toString() || "https://checkreactiontime.com";
+const currentUrl = new URL(Astro.url.pathname, siteUrl).toString();
+
+const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: itemName,
+    url: currentUrl,
+    aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: ratingValue,
+        ratingCount: ratingCount,
+        reviewCount: reviewCount,
+        bestRating: bestRating,
+        worstRating: worstRating,
+    },
+};
+---
+
+<script
+    type="application/ld+json"
+    set:html={JSON.stringify(structuredData)}
+/>

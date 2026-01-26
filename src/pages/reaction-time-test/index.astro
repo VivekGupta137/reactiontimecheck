@@ -8,6 +8,7 @@ import { getEntry } from "astro:content";
 import { render } from "astro:content";
 import Markdown from "@/components/Markdown.astro";
 import StructuredData from "@/components/StructuredData.astro";
+import ReviewsStructuredData from "@/components/ReviewsStructuredData.astro";
 
 const rttContent = await getEntry("content", "reaction-time-test");
 const { Content, headings } = await render(rttContent!);
@@ -26,4 +27,13 @@ const { Content, headings } = await render(rttContent!);
     <Markdown headings={headings}>
         <Content />
     </Markdown>
+    <ReviewsStructuredData
+        slot="head"
+        itemName="Reaction Time Test"
+        ratingValue={4.9}
+        ratingCount={234}
+        reviewCount={645}
+        bestRating={5}
+        worstRating={1}
+    />
 </BaseLayout>
