@@ -1,19 +1,24 @@
-import { Textarea, type TextAreaProps } from "@heroui/react";
-import { Controller, useFormContext } from "react-hook-form";
+import {
+    type InputOtpProps,
+    type InputProps,
+    Input,
+    InputOtp,
+} from "@heroui/react";
+import React from "react";
+import { useFormContext, Controller } from "react-hook-form";
 
-const FormTextarea = (props: TextAreaProps & { name: string }) => {
+const FormInputOtp = (props: InputOtpProps & { name: string }) => {
     const { control } = useFormContext();
 
     return (
         <Controller
             name={props.name}
             control={control}
-            defaultValue={""}
             render={({
                 field: { onChange, onBlur, value, disabled },
                 fieldState: { invalid, error },
             }) => (
-                <Textarea
+                <InputOtp
                     className="w-full"
                     variant="bordered"
                     placeholder="Enter your text here..."
@@ -30,4 +35,4 @@ const FormTextarea = (props: TextAreaProps & { name: string }) => {
     );
 };
 
-export default FormTextarea;
+export default FormInputOtp;

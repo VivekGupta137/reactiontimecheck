@@ -1,5 +1,12 @@
 ---
+import BaseLayout from "@/layouts/BaseLayout.astro";
 import NMemoryTest from "@/components/number-memory/NMemoryTest";
 ---
 
-<NMemoryTest client:load />
+<BaseLayout
+    title="Number Memory Test - CheckReactionTime"
+    description="Test and improve your number memory skills with our interactive Number Memory Test. Challenge your brain and track your progress over time."
+    image="/open-graph/number-memory.png"
+>
+    <NMemoryTest client:load />
+</BaseLayout>
