@@ -32,7 +32,7 @@ const ProductList = () => {
             name: "Typing Speed Test",
             description:
                 "Measure and improve your typing speed with our Typing Speed Test. Compete against yourself and others to achieve the highest words per minute.",
-            link: "/typing-speed-test",
+            link: "https://ninjatype.com",
             Icon: (
                 <KeyboardIcon
                     size={80}
