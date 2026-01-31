@@ -8,6 +8,7 @@ import { getEntry } from "astro:content";
 import { render } from "astro:content";
 import ProductCard from "@/components/ProductCard";
 import StructuredData from "@/components/StructuredData.astro";
+import ProductList from "@/components/ProductList";
 
 const matches = import.meta.glob("../content/*.{md,mdx}", {
     eager: true,
@@ -31,36 +32,7 @@ const { Content, headings } = await render(homepage);
         type="WebSite"
     />
     <ReactionTest client:load />
-    <div class="flex gap-2 justify-center my-10 flex-wrap px-4">
-        <ProductCard
-            icon={"zap"}
-            href="/reaction-time-test"
-            heading="Reaction Time"
-            client:idle
-        >
-            Measure your reaction time with this simple test. Click as soon as
-            the screen turns green to see your results in milliseconds.
-        </ProductCard>
-        <ProductCard
-            icon={"keyboard"}
-            href="https://ninjatype.com"
-            heading="Typing Speed"
-            client:idle
-        >
-            Test and improve your typing speed with NinjaType. Challenge
-            yourself with various texts and track your progress over time.
-        </ProductCard>
-        <ProductCard
-            icon={"brain"}
-            href="/number-memory-test"
-            heading="Number Memory"
-            client:idle
-        >
-            Test and enhance your number memory skills with our interactive
-            Number Memory Test. See how many digits you can remember in
-            sequence.
-        </ProductCard>
-    </div>
+    <ProductList />
     <div
         class="prose dark:prose-invert prose-zinc w-full max-w-full px-2 md:px-6 lg:px-8"
     >

@@ -16,7 +16,7 @@ const ProductCard = (
     props: CardProps & {
         heading: string;
         children: ReactNode;
-        icon?: "zap" | "keyboard" | "brain";
+        icon?: ReactNode;
         href?: string;
     },
 ) => {
@@ -26,34 +26,6 @@ const ProductCard = (
         children: undefined,
         icon: undefined,
     };
-    let iconComponent: React.ReactNode = null;
-
-    switch (props.icon) {
-        case "keyboard":
-            iconComponent = (
-                <Keyboard
-                    size={80}
-                    className="group-hover:text-primary mx-2 transition-colors "
-                />
-            );
-            break;
-        case "zap":
-            iconComponent = (
-                <Zap
-                    size={80}
-                    className="group-hover:text-warning mx-2 transition-colors "
-                />
-            );
-            break;
-        case "brain":
-            iconComponent = (
-                <BrainIcon
-                    size={80}
-                    className="group-hover:text-success transition-colors mx-2"
-                />
-            );
-            break;
-    }
 
     return (
         <Card
@@ -75,7 +47,7 @@ const ProductCard = (
                 />
             </Button>
             <CardBody className="flex flex-col sm:flex-row flex-wrap p-0 sm:flex-nowrap ">
-                <div className="self-center mt-2">{iconComponent}</div>
+                <div className="self-center mt-2">{props.icon}</div>
                 <div className="px-4 py-5">
                     <h3 className="text-large font-medium">{props.heading}</h3>
                     <div className="text-small text-default-400 flex flex-col gap-3 pt-2">
