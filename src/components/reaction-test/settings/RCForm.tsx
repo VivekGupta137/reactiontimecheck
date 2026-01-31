@@ -1,25 +1,17 @@
-import React from "react";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
-import FormList from "./FormList";
-import FormInput from "@/components/form/FormInput";
+import { useFormContext } from "react-hook-form";
+import FormList from "@/components/settings/FormList";
 import FormInputNumber from "@/components/form/FormInputNumber";
 import FormTabs from "@/components/form/FormTabs";
 import { Tab } from "@heroui/react";
 import FormSlider from "@/components/form/FormSlider";
-import { useStore } from "@nanostores/react";
-import { $rtConfig } from "@/stores/reaction-settings";
 
-const RSettingsForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
+const RCForm = () => {
     const {
-        handleSubmit,
         formState: { errors },
     } = useFormContext();
 
     return (
-        <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-2"
-        >
+        <>
             <FormList
                 title="Max Rounds"
                 error={errors.maxRounds?.message as string}
@@ -65,8 +57,8 @@ const RSettingsForm = ({ onSubmit }: { onSubmit: (data: any) => void }) => {
                     className="overflow-hidden"
                 />
             </FormList>
-        </form>
+        </>
     );
 };
 
-export default RSettingsForm;
+export default RCForm;

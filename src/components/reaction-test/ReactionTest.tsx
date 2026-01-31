@@ -21,7 +21,6 @@ import RStarted from "./state-cards/RStarted";
 import { RotateCcw, Timer, Trophy, TrendingUp, CogIcon } from "lucide-react";
 import RFooter from "./RFooter";
 import RSlider from "./RSlider";
-import RSettings from "./settings/RSettings";
 import { HeroUIProvider } from "@heroui/react";
 import { ToastProvider } from "@heroui/toast";
 

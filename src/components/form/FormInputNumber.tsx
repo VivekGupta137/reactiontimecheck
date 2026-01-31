@@ -21,6 +21,7 @@ const FormInputNumber = (props: NumberInputProps) => {
                     hideStepper
                     {...props}
                     className={`not-content ${props.className || ""}`}
+                    aria-label={props.name as string}
                 />
             )}
         />

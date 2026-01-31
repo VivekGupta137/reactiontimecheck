@@ -1,18 +1,21 @@
 import {
     $currentRound,
     $currentSequence,
-    $nmDisplayDuration,
-    nmsGenerateNewSequence,
     nmsTransitionTo,
 } from "@/stores/number-memory/nm-state";
 import { useStore } from "@nanostores/react";
 import React, { useEffect } from "react";
 import TimeSlider from "../TimeSlider";
+import { $nmSettings } from "@/stores/number-memory/nm-settings";
 
 const NMSeqDisp = () => {
     const currentSequence = useStore($currentSequence);
     const currentRound = useStore($currentRound);
-    const displayDuration = useStore($nmDisplayDuration);
+    const nmSettings = useStore($nmSettings);
+    const nmDisplayDuration = parseInt(nmSettings.numDispDuration);
+    const nmAddDisplayPerRound = parseInt(nmSettings.additionalRoundTime);
+    const displayDuration =
+        nmDisplayDuration + (currentRound - 1) * nmAddDisplayPerRound;
 
     useEffect(() => {
         // After displaying, transition to the input state

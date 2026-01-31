@@ -2,7 +2,7 @@ import { transitionStateTo } from "@/stores/reaction-state";
 import { Button } from "@heroui/react";
 import { Mouse, MousePointer2, MousePointerClick } from "lucide-react";
 import React from "react";
-import RSettings from "../settings/RSettings";
+import RCSettings from "../settings/RCSettings";
 
 const RIdle = () => {
     return (
@@ -30,7 +30,7 @@ const RIdle = () => {
                     >
                         Start Test
                     </Button>
-                    <RSettings />
+                    <RCSettings />
                 </div>
             </div>
         </div>
