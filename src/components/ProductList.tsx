@@ -5,10 +5,10 @@ import ProductCard from "./ProductCard";
 const ProductList = () => {
     const products = [
         {
-            name: "Reaction Time Checker",
+            name: "Reaction Time Test",
             description:
-                "Test and improve your reaction time with our interactive Reaction Time Checker. Challenge yourself and track your progress over time.",
-            link: "/reaction-time-checker",
+                "Test and improve your reaction time with our interactive Reaction Time Test. Challenge yourself and track your progress over time.",
+            link: "/reaction-time-test",
             Icon: (
                 <Zap
                     size={80}
