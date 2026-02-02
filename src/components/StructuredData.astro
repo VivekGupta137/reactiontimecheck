@@ -4,6 +4,7 @@
  * Now accepts schema objects from src/lib/schema.ts for type safety
  */
 import type { Thing, WithContext } from "schema-dts";
+// @ts-ignore - @types/jsonld is installed
 import jsonld from "jsonld";
 
 interface Props {

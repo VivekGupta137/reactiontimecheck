@@ -7,7 +7,7 @@ import Brand from "./Brand";
 
 const Footer = () => {
     const statistics = useStore($statistics);
-    const hasData = statistics.count > 0;
+    const hasData = statistics.validCount > 0;
 
     return (
         <footer className="flex w-full flex-col border-t border-default-200 mt-4">

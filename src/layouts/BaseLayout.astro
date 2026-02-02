@@ -23,7 +23,9 @@ const { title, description, image, noindex } = Astro.props;
     class="dark"
 >
     <head>
-        <AstroFont config={fontConfig} />
+        <AstroFont
+            config={fontConfig.map((font) => ({ ...font, src: [...font.src] }))}
+        />
         <BaseHead
             title={title}
             description={description}
@@ -41,7 +43,7 @@ const { title, description, image, noindex } = Astro.props;
             <!-- your content is injected here -->
         </main>
         <Footer />
-        
+
         <!-- Google Analytics via Partytown (runs in web worker) -->
         <!-- Placed at end of body to avoid React hydration conflicts -->
         <script

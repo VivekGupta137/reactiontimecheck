@@ -62,10 +62,7 @@ export default defineConfig({
         }),
         compress({
             CSS: true,
-            HTML: {
-                removeAttributeQuotes: false,
-                removeComments: false, // Keep for debugging
-            },
+            HTML: true,
             Image: true,
             JavaScript: true,
             SVG: true,

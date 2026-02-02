@@ -9,8 +9,8 @@ export const fontConfig = [
         googleFontsURL:
             "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap",
         preload: true,
-        display: "swap",
-        fallback: "sans-serif",
+        display: "swap" as const,
+        fallback: "sans-serif" as const,
     },
     {
         name: "JetBrains Mono",
@@ -18,7 +18,7 @@ export const fontConfig = [
         googleFontsURL:
             "https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap",
         preload: true,
-        display: "swap",
-        fallback: "monospace",
+        display: "swap" as const,
+        fallback: "monospace" as const,
     },
-];
+] as const;
