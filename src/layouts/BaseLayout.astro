@@ -3,6 +3,8 @@ import Footer from "@/components/Footer";
 import "@/styles/global.css";
 import BaseNav from "./BaseNav.astro";
 import BaseHead from "./BaseHead.astro";
+import { AstroFont } from "astro-font";
+import { fontConfig } from "@/config/fonts";
 
 interface Props {
     title: string;
@@ -21,6 +23,7 @@ const { title, description, image, noindex } = Astro.props;
     class="dark"
 >
     <head>
+        <AstroFont config={fontConfig} />
         <BaseHead
             title={title}
             description={description}
@@ -38,5 +41,21 @@ const { title, description, image, noindex } = Astro.props;
             <!-- your content is injected here -->
         </main>
         <Footer />
+        
+        <!-- Google Analytics via Partytown (runs in web worker) -->
+        <!-- Placed at end of body to avoid React hydration conflicts -->
+        <script
+            type="text/partytown"
+            src="https://www.googletagmanager.com/gtag/js?id=G-8479THZJRY"
+        ></script>
+        <script type="text/partytown">
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+
+            gtag("config", "G-8479THZJRY");
+        </script>
     </body>
 </html>

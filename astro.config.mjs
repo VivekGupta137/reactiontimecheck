@@ -13,6 +13,8 @@ import sitemap from "@astrojs/sitemap";
 
 import partytown from "@astrojs/partytown";
 
+import compress from "@playform/compress";
+
 // https://astro.build/config
 export default defineConfig({
     output: "static",
@@ -57,6 +59,16 @@ export default defineConfig({
             config: {
                 forward: ["dataLayer.push"],
             },
+        }),
+        compress({
+            CSS: true,
+            HTML: {
+                removeAttributeQuotes: false,
+                removeComments: false, // Keep for debugging
+            },
+            Image: true,
+            JavaScript: true,
+            SVG: true,
         }),
     ],
     build: {

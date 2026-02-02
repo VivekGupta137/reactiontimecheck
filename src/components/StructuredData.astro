@@ -1,37 +1,30 @@
 ---
+/**
+ * Enhanced StructuredData component with jsonld validation
+ * Now accepts schema objects from src/lib/schema.ts for type safety
+ */
+import type { Thing, WithContext } from "schema-dts";
+import jsonld from "jsonld";
+
 interface Props {
-    type?: "WebSite" | "WebPage" | "Article" | "SoftwareApplication";
-    title?: string;
-    description?: string;
-    url?: string;
+    schema: WithContext<Thing>;
+    validate?: boolean;
 }
 
-const { type = "WebSite", title, description, url } = Astro.props;
-const siteUrl = Astro.site?.toString() || "https://checkreactiontime.com";
-const currentUrl = url || new URL(Astro.url.pathname, siteUrl).toString();
+const { schema, validate = false } = Astro.props;
 
-const structuredData = {
-    "@context": "https://schema.org",
-    "@type": type,
-    name: title || "Check Reaction Time",
-    description:
-        description ||
-        "Test your reaction time and improve your gaming reflexes",
-    url: currentUrl,
-    ...(type === "WebSite" && {
-        potentialAction: {
-            "@type": "SearchAction",
-            target: {
-                "@type": "EntryPoint",
-                urlTemplate: `${siteUrl}/search?q={search_term_string}`,
-            },
-            "query-input": "required name=search_term_string",
-        },
-    }),
-};
+// Optionally validate in development
+if (import.meta.env.DEV && validate) {
+    try {
+        await jsonld.compact(schema, schema["@context"]);
+        console.log("✓ Valid JSON-LD schema:", (schema as any)["@type"]);
+    } catch (error) {
+        console.error("✗ Invalid JSON-LD schema:", error);
+    }
+}
 ---
 
 <script
     type="application/ld+json"
-    set:html={JSON.stringify(structuredData)}
+    set:html={JSON.stringify(schema)}
 />

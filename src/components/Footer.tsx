@@ -52,7 +52,7 @@ const Footer = () => {
                                     Completed
                                 </p>
                                 <p className="text-2xl font-bold text-default-700">
-                                    {statistics.count}
+                                    {statistics?.validCount ?? 0}
                                     <span className="text-sm text-default-500 ml-1">
                                         rounds
                                     </span>
@@ -138,7 +138,10 @@ const Footer = () => {
                 />
 
                 {/* Copyright */}
-                <p className="text-small text-default-400 mt-1 text-center">
+                <p
+                    className="text-small text-default-400 mt-1 text-center"
+                    suppressHydrationWarning
+                >
                     © {new Date().getFullYear()} Check Reaction Time. All rights
                     reserved.
                 </p>

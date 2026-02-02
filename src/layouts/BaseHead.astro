@@ -20,6 +20,32 @@ const imageURL = new URL(image, Astro.site);
 ---
 
 <meta charset="utf-8" />
+
+<!-- Resource Hints for Performance -->
+<link
+    rel="dns-prefetch"
+    href="https://fonts.googleapis.com"
+/>
+<link
+    rel="dns-prefetch"
+    href="https://fonts.gstatic.com"
+/>
+<link
+    rel="dns-prefetch"
+    href="https://www.googletagmanager.com"
+/>
+<link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+    crossorigin
+/>
+<link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+/>
+
+<!-- Favicons -->
 <link
     rel="icon"
     type="image/x-icon"
@@ -129,17 +155,3 @@ const imageURL = new URL(image, Astro.site);
 
 <!-- Structured Data Placeholder -->
 <slot name="schema" />
-<!-- Google tag (gtag.js) -->
-<script
-    async
-    src="https://www.googletagmanager.com/gtag/js?id=G-8479THZJRY"
-></script>
-<script is:inline>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-    gtag("js", new Date());
-
-    gtag("config", "G-8479THZJRY");
-</script>
