@@ -17,7 +17,7 @@ const { schema, validate = false } = Astro.props;
 // Optionally validate in development
 if (import.meta.env.DEV && validate) {
     try {
-        await jsonld.compact(schema, schema["@context"]);
+        await jsonld.compact(schema, { "@context": schema["@context"] });
         console.log("✓ Valid JSON-LD schema:", (schema as any)["@type"]);
     } catch (error) {
         console.error("✗ Invalid JSON-LD schema:", error);

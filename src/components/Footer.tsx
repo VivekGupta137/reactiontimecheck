@@ -2,7 +2,14 @@ import React from "react";
 import { useStore } from "@nanostores/react";
 import { $statistics } from "@/stores/reaction-state";
 import { Link } from "@heroui/react";
-import { Timer, Github, Twitter, Linkedin, ClockCheck } from "lucide-react";
+import {
+    Timer,
+    Github,
+    Twitter,
+    Linkedin,
+    ClockCheck,
+    ShieldUserIcon,
+} from "lucide-react";
 import Brand from "./Brand";
 
 const Footer = () => {
@@ -92,6 +99,12 @@ const Footer = () => {
                     >
                         Blog
                     </Link>
+                    <Link
+                        className="text-small text-default-500"
+                        href="/privacy/"
+                    >
+                        Privacy Policy
+                    </Link>
                 </div>
 
                 {/* Spacer */}
@@ -111,7 +124,7 @@ const Footer = () => {
                     >
                         <Github className="w-5 h-5" />
                     </Link>
-                    <Link
+                    {/* <Link
                         className="text-medium text-default-400"
                         href="https://twitter.com/"
                         target="_blank"
@@ -119,7 +132,7 @@ const Footer = () => {
                         aria-label="Twitter"
                     >
                         <Twitter className="w-5 h-5" />
-                    </Link>
+                    </Link> */}
                     <Link
                         className="text-medium text-default-400"
                         href="https://www.linkedin.com/in/vivek-gupta-visa/"
@@ -128,6 +141,13 @@ const Footer = () => {
                         aria-label="LinkedIn"
                     >
                         <Linkedin className="w-5 h-5" />
+                    </Link>
+                    <Link
+                        className="text-medium text-default-400"
+                        href="/privacy/"
+                        aria-label="Privacy Policy"
+                    >
+                        <ShieldUserIcon className="w-5 h-5" />
                     </Link>
                 </div>
 

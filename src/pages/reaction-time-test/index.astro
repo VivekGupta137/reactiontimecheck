@@ -9,6 +9,7 @@ import { render } from "astro:content";
 import Markdown from "@/components/Markdown.astro";
 import StructuredData from "@/components/StructuredData.astro";
 import ReviewsStructuredData from "@/components/ReviewsStructuredData.astro";
+import { webApplicationSchema } from "@/lib/schema";
 
 const rttContent = await getEntry("content", "reaction-time-test");
 const { Content, headings } = await render(rttContent!);
@@ -21,7 +22,7 @@ const { Content, headings } = await render(rttContent!);
 >
     <StructuredData
         slot="head"
-        type="WebPage"
+        schema={webApplicationSchema}
     />
     <ReactionTest client:load />
     <Markdown headings={headings}>

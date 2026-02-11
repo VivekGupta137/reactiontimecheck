@@ -1,0 +1,21 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import BaseHead from "@/layouts/BaseHead.astro";
+import { getEntry } from "astro:content";
+import { render } from "astro:content";
+import "@/styles/global.css";
+import Markdown from "@/components/Markdown.astro";
+
+const privacyContent = await getEntry("content", "privacy");
+const { Content } = await render(privacyContent!);
+---
+
+<BaseLayout
+    title="Privacy Policy - CheckReactionTime"
+    description="Learn about our commitment to user privacy, data handling practices, and how we protect your personal information."
+    image="/open-graph/privacy.png"
+>
+    <Markdown>
+        <Content />
+    </Markdown>
+</BaseLayout>

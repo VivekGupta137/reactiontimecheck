@@ -9,6 +9,7 @@ import { render } from "astro:content";
 import ProductCard from "@/components/ProductCard";
 import StructuredData from "@/components/StructuredData.astro";
 import ProductList from "@/components/ProductList";
+import { websiteSchema } from "@/lib/schema";
 
 const matches = import.meta.glob("../content/*.{md,mdx}", {
     eager: true,
@@ -29,7 +30,7 @@ const { Content, headings } = await render(homepage);
 >
     <StructuredData
         slot="head"
-        type="WebSite"
+        schema={websiteSchema}
     />
     <ReactionTest client:load />
     <ProductList />
