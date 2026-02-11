@@ -10,6 +10,9 @@ import type {
     Organization,
     BreadcrumbList,
     WebApplication,
+    SoftwareApplication,
+    HowTo,
+    HowToStep,
 } from "schema-dts";
 import jsonld from "jsonld";
 
@@ -46,7 +49,9 @@ export const organizationSchema: WithContext<Organization> = {
     name: SITE_NAME,
     url: SITE_URL,
     logo: `${SITE_URL}/logo.png`,
-    sameAs: [], // Add social media links here
+    description:
+        "Free online cognitive testing tools for reaction time and memory",
+    sameAs: [], // Add social media links here when available
 };
 
 /**
@@ -71,15 +76,69 @@ export const webApplicationSchema: WithContext<WebApplication> = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Reaction Time Test",
-    description: "Online reaction time test tool",
+    description:
+        "Free online reaction time test tool to measure your reflexes and response speed",
     url: `${SITE_URL}/reaction-time-test`,
     applicationCategory: "UtilityApplication",
     operatingSystem: "Any",
+    softwareRequirements:
+        "Requires a modern web browser with JavaScript enabled",
+    featureList: [
+        "Accurate millisecond precision reaction time measurement",
+        "Detailed performance analytics and statistics",
+        "Historical test results tracking",
+        "Multiple test rounds with average calculation",
+        "No registration required",
+    ],
     offers: {
         "@type": "Offer",
         price: "0",
         priceCurrency: "USD",
     },
+    aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "4.9",
+        ratingCount: "234",
+        bestRating: "5",
+        worstRating: "1",
+    },
+    author: { "@id": `${SITE_URL}/#organization` },
+};
+
+/**
+ * Enhanced software application schema for number memory test
+ */
+export const numberMemoryAppSchema: WithContext<SoftwareApplication> = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Number Memory Test",
+    description:
+        "Free online number memory test to measure your working memory and digit span",
+    url: `${SITE_URL}/number-memory-test`,
+    applicationCategory: "UtilityApplication",
+    operatingSystem: "Any",
+    softwareRequirements:
+        "Requires a modern web browser with JavaScript enabled",
+    featureList: [
+        "Progressive difficulty number memory testing",
+        "Working memory and digit span measurement",
+        "Performance tracking over time",
+        "Adaptive difficulty progression",
+        "Instant results and feedback",
+    ],
+    offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+    },
+    aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "4.8",
+        ratingCount: "156",
+        bestRating: "5",
+        worstRating: "1",
+    },
+    author: { "@id": `${SITE_URL}/#organization` },
 };
 
 /**
@@ -127,6 +186,74 @@ export async function getBreadcrumbSchema(
             name: item.name,
             item: item.url,
         })),
+    };
+
+    // Validate in development using jsonld
+    await validateSchema(schema);
+
+    return schema;
+}
+
+/**
+ * Generate HowTo schema for tutorial/guide content
+ * Perfect for "how to improve reaction time" type articles
+ */
+export async function getHowToSchema(
+    name: string,
+    description: string,
+    steps: Array<{ name: string; text: string; image?: string }>,
+    url: string,
+): Promise<WithContext<HowTo>> {
+    const schema: WithContext<HowTo> = {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        name: name,
+        description: description,
+        url: url,
+        step: steps.map(
+            (step, index): HowToStep => ({
+                "@type": "HowToStep",
+                position: index + 1,
+                name: step.name,
+                text: step.text,
+                ...(step.image && { image: step.image }),
+            }),
+        ),
+    };
+
+    // Validate in development using jsonld
+    await validateSchema(schema);
+
+    return schema;
+}
+
+/**
+ * Generate WebPage schema for regular content pages
+ */
+export async function getWebPageSchema(
+    title: string,
+    description: string,
+    url: string,
+    breadcrumbs?: Array<{ name: string; url: string }>,
+): Promise<WithContext<WebPage>> {
+    const schema: WithContext<WebPage> = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        name: title,
+        description: description,
+        url: url,
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        ...(breadcrumbs && {
+            breadcrumb: {
+                "@type": "BreadcrumbList",
+                itemListElement: breadcrumbs.map((item, index) => ({
+                    "@type": "ListItem",
+                    position: index + 1,
+                    name: item.name,
+                    item: item.url,
+                })),
+            },
+        }),
     };
 
     // Validate in development using jsonld

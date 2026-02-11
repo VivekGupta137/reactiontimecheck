@@ -16,6 +16,10 @@ const blogs = defineCollection({
         title: z.string(),
         description: z.string(),
         pageTitle: z.string().optional(),
+        publishDate: z
+            .date()
+            .optional()
+            .default(() => new Date()),
         updatedOn: z.date().optional(),
         draft: z.boolean().optional(),
     }),

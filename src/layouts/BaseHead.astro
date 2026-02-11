@@ -73,6 +73,14 @@ const imageURL = new URL(image, Astro.site);
     href="/site.webmanifest"
 />
 
+<!-- RSS Feed -->
+<link
+    rel="alternate"
+    type="application/rss+xml"
+    title="Check Reaction Time Blog"
+    href="/rss.xml"
+/>
+
 <meta
     name="viewport"
     content="width=device-width, initial-scale=1"
@@ -148,6 +156,24 @@ const imageURL = new URL(image, Astro.site);
 <meta
     property="twitter:image"
     content={imageURL}
+/>
+<meta
+    name="twitter:creator"
+    content="@checkreactiontime"
+/>
+<meta
+    name="twitter:site"
+    content="@checkreactiontime"
+/>
+
+<!-- Additional SEO Meta Tags -->
+<meta
+    name="author"
+    content="Check Reaction Time"
+/>
+<meta
+    name="theme-color"
+    content="#000000"
 />
 
 <!-- View Transitions -->

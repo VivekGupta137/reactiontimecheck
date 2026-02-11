@@ -9,7 +9,12 @@ import { render } from "astro:content";
 import ProductCard from "@/components/ProductCard";
 import StructuredData from "@/components/StructuredData.astro";
 import ProductList from "@/components/ProductList";
-import { websiteSchema } from "@/lib/schema";
+import { websiteSchema, getBreadcrumbSchema } from "@/lib/schema";
+import Markdown from "@/components/Markdown.astro";
+
+const breadcrumbs = await getBreadcrumbSchema([
+    { name: "Home", url: "https://checkreactiontime.com" },
+]);
 
 const matches = import.meta.glob("../content/*.{md,mdx}", {
     eager: true,
@@ -24,19 +29,21 @@ const { Content, headings } = await render(homepage);
 ---
 
 <BaseLayout
-    title="Check Reaction Time - Test Your Gaming Reflexes Online"
-    description="Free online reaction time test. Measure your reaction speed, track your progress, and improve your gaming reflexes. Compare your results with pro gamers."
+    title="Free Reaction Time Test - Measure Your Reflexes Online"
+    description="Test your reaction time free. Measure gaming reflexes in milliseconds, track progress, compare with pros. Instant results. Start testing now!"
     image="/open-graph/home.png"
 >
     <StructuredData
         slot="head"
         schema={websiteSchema}
     />
+    <StructuredData
+        slot="head"
+        schema={breadcrumbs}
+    />
     <ReactionTest client:load />
     <ProductList />
-    <div
-        class="prose dark:prose-invert prose-zinc w-full max-w-full px-2 md:px-6 lg:px-8"
-    >
+    <Markdown>
         <Content />
-    </div>
+    </Markdown>
 </BaseLayout>

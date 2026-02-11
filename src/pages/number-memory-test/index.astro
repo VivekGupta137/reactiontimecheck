@@ -6,7 +6,15 @@ import { getEntry } from "astro:content";
 import Markdown from "@/components/Markdown.astro";
 import StructuredData from "@/components/StructuredData.astro";
 import ReviewsStructuredData from "@/components/ReviewsStructuredData.astro";
-import { webApplicationSchema } from "@/lib/schema";
+import { numberMemoryAppSchema, getBreadcrumbSchema } from "@/lib/schema";
+
+const breadcrumbs = await getBreadcrumbSchema([
+    { name: "Home", url: "https://checkreactiontime.com" },
+    {
+        name: "Number Memory Test",
+        url: "https://checkreactiontime.com/number-memory-test",
+    },
+]);
 
 const nmtest = await getEntry("content", "number-memory-test");
 const { Content, headings } = await render(nmtest!);
@@ -14,19 +22,11 @@ const { Content, headings } = await render(nmtest!);
 const pageTitle = "Number Memory Test – How Many Digits Can You Remember?";
 const pageDescription =
     "Test your number memory with our free online digit span test. Challenge your working memory, track your progress, and improve your memory capacity.";
-
-// Create a specific schema for the number memory test
-const numberMemorySchema = {
-    ...webApplicationSchema,
-    name: "Number Memory Test",
-    description: pageDescription,
-    url: "https://checkreactiontime.com/number-memory-test",
-};
 ---
 
 <BaseLayout
-    title="Number Memory Test - CheckReactionTime"
-    description="Test and improve your number memory skills with our interactive Number Memory Test. Challenge your brain and track your progress over time."
+    title={pageTitle}
+    description={pageDescription}
     image="/open-graph/number-memory.png"
 >
     <NMemoryTest client:load />
@@ -35,13 +35,17 @@ const numberMemorySchema = {
     </Markdown>
     <StructuredData
         slot="head"
-        schema={numberMemorySchema}
+        schema={numberMemoryAppSchema}
+    />
+    <StructuredData
+        slot="head"
+        schema={breadcrumbs}
     />
     <ReviewsStructuredData
         slot="head"
         itemName="Number Memory Test"
-        ratingValue={4.7}
-        ratingCount={356}
+        ratingValue={4.8}
+        ratingCount={156}
         reviewCount={645}
         bestRating={5}
         worstRating={1}

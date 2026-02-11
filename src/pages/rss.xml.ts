@@ -19,7 +19,7 @@ export async function GET(context: APIContext) {
         site: context.site!,
         items: blogs.map((post) => ({
             title: post.data.title,
-            pubDate: new Date(), // Will update once publishDate is in schema
+            pubDate: post.data.publishDate || new Date(),
             description: post.data.description,
             link: `/blogs/${post.id}/`,
         })),

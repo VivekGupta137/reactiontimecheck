@@ -9,20 +9,32 @@ import { render } from "astro:content";
 import Markdown from "@/components/Markdown.astro";
 import StructuredData from "@/components/StructuredData.astro";
 import ReviewsStructuredData from "@/components/ReviewsStructuredData.astro";
-import { webApplicationSchema } from "@/lib/schema";
+import { webApplicationSchema, getBreadcrumbSchema } from "@/lib/schema";
+
+const breadcrumbs = await getBreadcrumbSchema([
+    { name: "Home", url: "https://checkreactiontime.com" },
+    {
+        name: "Reaction Time Test",
+        url: "https://checkreactiontime.com/reaction-time-test",
+    },
+]);
 
 const rttContent = await getEntry("content", "reaction-time-test");
 const { Content, headings } = await render(rttContent!);
 ---
 
 <BaseLayout
-    title="Reaction Time Test - Measure Your Gaming Reflexes & Response Speed"
-    description="Test your reaction time instantly with our free online reaction speed test. Measure reflex speed, compare averages, and improve your response time for gaming."
+    title="Reaction Time Test - Free Online Reflex Speed Tester"
+    description="Test reaction time instantly. Free online tool measures your reflex speed in milliseconds. Compare with averages, track progress, improve gaming performance."
     image="/open-graph/reaction-time-test.png"
 >
     <StructuredData
         slot="head"
         schema={webApplicationSchema}
+    />
+    <StructuredData
+        slot="head"
+        schema={breadcrumbs}
     />
     <ReactionTest client:load />
     <Markdown headings={headings}>

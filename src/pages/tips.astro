@@ -5,16 +5,55 @@ import { getEntry } from "astro:content";
 import { render } from "astro:content";
 import "@/styles/global.css";
 import Markdown from "@/components/Markdown.astro";
+import StructuredData from "@/components/StructuredData.astro";
+import { getHowToSchema } from "@/lib/schema";
 
 const tipsContent = await getEntry("content", "improvement-tips");
 const { Content } = await render(tipsContent!);
+
+// HowTo schema for reaction time improvement
+const howToSchema = await getHowToSchema(
+    "How to Improve Reaction Time for Gaming",
+    "Step-by-step guide to improve your reaction time for competitive gaming through practice, training, and lifestyle optimization.",
+    [
+        {
+            name: "Practice Daily with Reaction Time Tests",
+            text: "Take 5-10 minutes daily to practice with a reaction time test. Regular practice strengthens neural pathways and improves response speed. Track your progress over time to see improvements.",
+        },
+        {
+            name: "Get Adequate Sleep (7-9 Hours)",
+            text: "Sleep directly affects cognitive performance and reaction time. Aim for 7-9 hours of quality sleep each night. Avoid gaming when sleep-deprived as your reaction time will be significantly slower.",
+        },
+        {
+            name: "Stay Hydrated Throughout the Day",
+            text: "Dehydration impairs cognitive function and slows reaction time. Drink 8-10 glasses of water daily. Keep water nearby during gaming sessions and drink regularly.",
+        },
+        {
+            name: "Exercise Regularly for Brain Health",
+            text: "Physical exercise improves blood flow to the brain and enhances cognitive performance. Aim for 30 minutes of exercise 3-5 times per week. Cardiovascular exercise is particularly beneficial for reaction speed.",
+        },
+        {
+            name: "Optimize Your Gaming Setup",
+            text: "Use a gaming mouse with high polling rate (1000Hz), a monitor with high refresh rate (144Hz+), and minimize input lag. Proper ergonomics and comfortable positioning also improve performance.",
+        },
+        {
+            name: "Practice Mindfulness and Focus Training",
+            text: "Improve concentration through meditation or focus exercises. Eliminate distractions during practice sessions. Better focus directly translates to faster reaction times.",
+        },
+    ],
+    "https://checkreactiontime.com/tips",
+);
 ---
 
 <BaseLayout
-    title="How to Improve Reaction Time for Gaming - Proven Tips & Training"
-    description="Learn proven tips to improve your reaction time for gaming, FPS titles, and esports. Expert training advice to boost your reflexes and response speed."
+    title="How to Improve Reaction Time: 15 Proven Gaming Tips"
+    description="Improve your reaction time with proven training methods. Expert tips for gamers, FPS players, and esports athletes. Boost reflexes and response speed today."
     image="/open-graph/tips.png"
 >
+    <StructuredData
+        slot="head"
+        schema={howToSchema}
+    />
     <Markdown>
         <Content />
     </Markdown>

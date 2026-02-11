@@ -4,6 +4,7 @@ import { rehypeHeadingIds } from "@astrojs/markdown-remark";
 
 import tailwindcss from "@tailwindcss/vite";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeExternalLinks from "rehype-external-links";
 
 import react from "@astrojs/react";
 
@@ -46,6 +47,17 @@ export default defineConfig({
                             children: [{ type: "text", value: "#" }],
                         },
                     ],
+                },
+            ],
+            [
+                rehypeExternalLinks,
+                {
+                    target: "_blank",
+                    rel: ["noopener", "noreferrer"],
+                    content: {
+                        type: "text",
+                        value: " ↗",
+                    },
                 },
             ],
         ],

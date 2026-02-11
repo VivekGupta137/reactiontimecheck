@@ -4,6 +4,8 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { render } from "astro:content";
 import { getEntry } from "astro:content";
 import { getCollection } from "astro:content";
+import StructuredData from "@/components/StructuredData.astro";
+import { getArticleSchema, getBreadcrumbSchema } from "@/lib/schema";
 
 export async function getStaticPaths() {
     const allBlogs = await getCollection("blogs");
@@ -17,6 +19,25 @@ export async function getStaticPaths() {
 const { blog } = Astro.params;
 const blogContent = await getEntry("blogs", blog);
 const { Content, headings } = await render(blogContent!);
+
+// Generate Article schema
+const articleSchema = await getArticleSchema(
+    blogContent!.data.title,
+    blogContent!.data.description || "",
+    `https://checkreactiontime.com/blogs/${blog}`,
+    blogContent!.data.updatedOn || new Date(),
+    blogContent!.data.updatedOn,
+);
+
+// Generate breadcrumb schema
+const breadcrumbSchema = await getBreadcrumbSchema([
+    { name: "Home", url: "https://checkreactiontime.com" },
+    { name: "Blog", url: "https://checkreactiontime.com/blogs" },
+    {
+        name: blogContent!.data.title,
+        url: `https://checkreactiontime.com/blogs/${blog}`,
+    },
+]);
 ---
 
 <BaseLayout
@@ -24,6 +45,14 @@ const { Content, headings } = await render(blogContent!);
     description={blogContent?.data.description || ""}
     image={`/open-graph/${blogContent?.id}.png`}
 >
+    <StructuredData
+        slot="head"
+        schema={articleSchema}
+    />
+    <StructuredData
+        slot="head"
+        schema={breadcrumbSchema}
+    />
     <Markdown headings={headings}>
         <Content />
     </Markdown>
