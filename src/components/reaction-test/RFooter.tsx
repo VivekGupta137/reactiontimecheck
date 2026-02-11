@@ -76,7 +76,7 @@ const RFooter = () => {
                     />
                 }
                 as={"a"}
-                href="/reaction-time-test/analytics"
+                href="/reaction-time-test/analytics/"
             >
                 Analytics
             </Button>

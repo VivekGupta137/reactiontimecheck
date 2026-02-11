@@ -20,7 +20,7 @@ const allTipsBlog = await getCollection("blogs");
                 .map((blog) => (
                     <BlogCard
                         heading={blog.data.title}
-                        href={`/blogs/${blog.id}`}
+                        href={`/blogs/${blog.id}/`}
                         updatedAt={blog.data?.updatedOn}
                     >
                         {blog.data.description}

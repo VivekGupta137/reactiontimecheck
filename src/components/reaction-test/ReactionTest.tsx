@@ -55,7 +55,7 @@ const ReactionTest = () => {
                         <h1 className="text-xl font-bold">
                             Reaction Time Test{" "}
                             <Link
-                                href="/reaction-time-test"
+                                href="/reaction-time-test/"
                                 showAnchorIcon
                                 isBlock
                                 size="sm"

@@ -76,19 +76,19 @@ const Footer = () => {
                     </Link>
                     <Link
                         className="text-small text-default-500"
-                        href="/about"
+                        href="/about/"
                     >
                         About
                     </Link>
                     <Link
                         className="text-small text-default-500"
-                        href="/tips"
+                        href="/tips/"
                     >
                         Tips
                     </Link>
                     <Link
                         className="text-small text-default-500"
-                        href="/blogs"
+                        href="/blogs/"
                     >
                         Blog
                     </Link>
@@ -104,7 +104,7 @@ const Footer = () => {
                 <div className="flex justify-center gap-x-4">
                     <Link
                         className="text-medium text-default-400"
-                        href="https://github.com/VivekGupta137/reactiontimecheck"
+                        href="https://github.com/VivekGupta137/reactiontimecheck/"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="GitHub"
@@ -113,7 +113,7 @@ const Footer = () => {
                     </Link>
                     <Link
                         className="text-medium text-default-400"
-                        href="https://twitter.com"
+                        href="https://twitter.com/"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Twitter"

@@ -187,7 +187,7 @@ const RAnalytics = () => {
                         />
                     }
                     underline="hover"
-                    href="/reaction-time-test"
+                    href="/reaction-time-test/"
                     className="text-sm text-default-500"
                 >
                     &larr; Back to Reaction Test
