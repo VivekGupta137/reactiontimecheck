@@ -8,7 +8,7 @@ const ProductList = () => {
             name: "Reaction Time Test",
             description:
                 "Test and improve your reaction time with our interactive Reaction Time Test. Challenge yourself and track your progress over time.",
-            link: "/reaction-time-test",
+            link: "/reaction-time-test/",
             Icon: (
                 <Zap
                     size={80}
@@ -20,7 +20,7 @@ const ProductList = () => {
             name: "Number Memory Test",
             description:
                 "Enhance your memory skills with our Number Memory Test. Remember and recall sequences of numbers to boost your cognitive abilities.",
-            link: "/number-memory-test",
+            link: "/number-memory-test/",
             Icon: (
                 <Brain
                     size={80}
@@ -32,7 +32,7 @@ const ProductList = () => {
             name: "Typing Speed Test",
             description:
                 "Measure and improve your typing speed with our Typing Speed Test. Compete against yourself and others to achieve the highest words per minute.",
-            link: "https://ninjatype.com",
+            link: "https://ninjatype.com/",
             Icon: (
                 <KeyboardIcon
                     size={80}
