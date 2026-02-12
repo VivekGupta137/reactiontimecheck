@@ -69,7 +69,7 @@ With each correct answer:
 
 The test continues until you make a mistake.
 
-👉 Try it now: [https://checkreactiontime.com/number-memory-test](https://checkreactiontime.com/number-memory-test)
+👉 Try it now: [https://checkreactiontime.com/number-memory-test](https://checkreactiontime.com/number-memory-test/)
 
 ---
 
@@ -240,7 +240,7 @@ Yes. It helps with:
 
 Ready to test your skills?
 
-👉 [https://checkreactiontime.com/number-memory-test](https://checkreactiontime.com/number-memory-test)
+👉 [https://checkreactiontime.com/number-memory-test](https://checkreactiontime.com/number-memory-test/)
 
 Track your progress, beat your high score, and train your brain daily.
 
@@ -259,6 +259,6 @@ With:
 You can dramatically improve how many digits you remember.
 
 Start training today:
-👉 [https://checkreactiontime.com/number-memory-test](https://checkreactiontime.com/number-memory-test)
+👉 [https://checkreactiontime.com/number-memory-test](https://checkreactiontime.com/number-memory-test/)
 
 Your brain will thank you.

@@ -32,7 +32,7 @@ export const GET: APIRoute = async ({ site }) => {
         const path = doc.id.replace(/\.mdx$/, "");
         const url = new URL(path, siteUrl).href;
 
-        content += `- [${title}](${url})`;
+        content += `- [${title}](${url}/)`;
         if (description) {
             content += ` - ${description}`;
         }
@@ -52,7 +52,7 @@ export const GET: APIRoute = async ({ site }) => {
             const path = `blogs/${blog.id.replace(/\.mdx?$/, "")}`;
             const url = new URL(path, siteUrl).href;
 
-            content += `- [${title}](${url})`;
+            content += `- [${title}](${url}/)`;
             if (description) {
                 content += ` - ${description}`;
             }

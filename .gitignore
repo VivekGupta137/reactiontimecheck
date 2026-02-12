@@ -8,6 +8,7 @@ node_modules/
 
 # package lock files
 package-lock.json
+bun.lock
 
 # logs
 npm-debug.log*
